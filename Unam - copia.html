@@ -1,0 +1,2732 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNAM Área 3 · Economía SUA · Planner 2026</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d0f14;
+            --surface: #161a23;
+            --surface2: #1e2330;
+            --border: #2a3045;
+            --accent: #5b8af5;
+            --accent2: #a78bfa;
+            --green: #34d399;
+            --amber: #fbbf24;
+            --red: #f87171;
+            --text: #e2e8f0;
+            --text2: #8892a4;
+            --text3: #555f73;
+            --radius: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* SIDEBAR */
+        #sidebar {
+            width: 270px;
+            min-height: 100vh;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+.logo {
+padding: 22px 18px 14px;
+font-family: 'Syne', sans-serif;
+font-weight: 800;
+font-size: 0.95rem;
+letter-spacing: -0.3px;
+border-bottom: 1px solid var(--border);
+color: var(--accent);
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
+
+.logo .sub {
+font-size: 0.7rem;
+color: var(--text3);
+font-weight: 400;
+}
+
+nav {
+padding: 10px 8px;
+flex: 1;
+}
+
+.nav-section {
+margin-bottom: 18px;
+}
+
+.nav-label {
+font-size: 0.63rem;
+font-weight: 600;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+color: var(--text3);
+padding: 5px 10px 3px;
+}
+
+.nav-btn {
+display: flex;
+align-items: center;
+gap: 10px;
+width: 100%;
+padding: 9px 10px;
+border: none;
+background: none;
+color: var(--text2);
+border-radius: 7px;
+cursor: pointer;
+font-family: 'DM Sans', sans-serif;
+font-size: 0.85rem;
+text-align: left;
+transition: all 0.15s;
+}
+
+.nav-btn:hover {
+background: var(--surface2);
+color: var(--text);
+}
+
+.nav-btn.active {
+background: rgba(91, 138, 245, 0.15);
+color: var(--accent);
+font-weight: 500;
+}
+
+.nav-btn .icon {
+font-size: 0.95rem;
+}
+
+.nav-btn .badge {
+margin-left: auto;
+font-size: 0.65rem;
+font-family: 'DM Mono', monospace;
+background: var(--surface2);
+border: 1px solid var(--border);
+padding: 1px 6px;
+border-radius: 99px;
+color: var(--text3);
+}
+
+.progress-sidebar {
+padding: 14px 14px 18px;
+border-top: 1px solid var(--border);
+}
+
+.ps-label {
+font-size: 0.72rem;
+color: var(--text3);
+margin-bottom: 6px;
+}
+
+.ps-bar {
+background: var(--surface2);
+border-radius: 99px;
+height: 6px;
+overflow: hidden;
+}
+
+.ps-fill {
+height: 100%;
+background: linear-gradient(90deg, var(--accent), var(--accent2));
+border-radius: 99px;
+transition: width 0.4s;
+}
+
+.ps-pct {
+font-size: 0.72rem;
+color: var(--text2);
+margin-top: 4px;
+text-align: right;
+}
+
+/* MAIN */
+#main {
+flex: 1;
+overflow-y: auto;
+padding: 28px 32px;
+}
+
+.page {
+display: none;
+}
+
+.page.active {
+display: block;
+}
+
+/* PAGE HEADER */
+.page-header {
+margin-bottom: 24px;
+}
+
+.page-header h1 {
+font-family: 'Syne', sans-serif;
+font-weight: 800;
+font-size: 1.7rem;
+letter-spacing: -1px;
+margin-bottom: 4px;
+}
+
+.page-header p {
+color: var(--text2);
+font-size: 0.88rem;
+}
+
+/* CALENDAR */
+.calendar-grid {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 6px;
+}
+
+.cal-day-header {
+text-align: center;
+font-size: 0.65rem;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: var(--text3);
+padding: 5px 0;
+font-family: 'DM Mono', monospace;
+}
+
+.cal-day {
+aspect-ratio: 1;
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: 8px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: all 0.15s;
+position: relative;
+gap: 3px;
+padding: 5px;
+}
+
+.cal-day:hover {
+border-color: var(--accent);
+background: var(--surface2);
+transform: translateY(-1px);
+}
+
+.cal-day.empty {
+background: transparent;
+border-color: transparent;
+cursor: default;
+}
+
+.cal-day.empty:hover {
+transform: none;
+}
+
+.cal-day.today {
+border-color: var(--accent);
+}
+
+.cal-day .num {
+font-family: 'DM Mono', monospace;
+font-size: 0.82rem;
+font-weight: 500;
+}
+
+.cal-day .dot {
+display: none;
+width: 5px;
+height: 5px;
+border-radius: 99px;
+background: var(--accent);
+}
+
+.cal-day.has-content .dot {
+display: block;
+}
+
+.cal-day .done-ring {
+position: absolute;
+inset: 0;
+border-radius: 8px;
+border: 2px solid transparent;
+transition: border-color 0.2s;
+}
+
+.cal-day.all-done .done-ring {
+border-color: var(--green);
+}
+
+.cal-day.partial .done-ring {
+border-color: var(--amber);
+}
+
+.cal-day .mini-subjects {
+display: flex;
+flex-wrap: wrap;
+gap: 2px;
+justify-content: center;
+max-width: 100%;
+}
+
+.mini-tag {
+font-size: 0.42rem;
+padding: 1px 3px;
+border-radius: 3px;
+font-family: 'DM Mono', monospace;
+max-width: 38px;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+
+.month-nav {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 14px;
+}
+
+.month-nav h2 {
+font-family: 'Syne', sans-serif;
+font-weight: 700;
+font-size: 1.1rem;
+flex: 1;
+text-transform: capitalize;
+}
+
+.month-btn {
+width: 30px;
+height: 30px;
+border: 1px solid var(--border);
+background: var(--surface);
+color: var(--text);
+border-radius: 6px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: all 0.15s;
+font-size: 1rem;
+}
+
+.month-btn:hover {
+border-color: var(--accent);
+color: var(--accent);
+}
+
+.week-label {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 6px;
+margin-bottom: 4px;
+}
+
+/* MODALS */
+.modal-overlay {
+position: fixed;
+inset: 0;
+background: rgba(0, 0, 0, 0.75);
+backdrop-filter: blur(4px);
+z-index: 100;
+display: none;
+align-items: flex-start;
+justify-content: center;
+padding: 32px 16px;
+overflow-y: auto;
+}
+
+.modal-overlay.open {
+display: flex;
+}
+
+.modal {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: 14px;
+width: 100%;
+max-width: 700px;
+padding: 26px;
+position: relative;
+animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+from {
+opacity: 0;
+transform: translateY(14px);
+}
+
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.modal-close {
+position: absolute;
+top: 14px;
+right: 14px;
+width: 30px;
+height: 30px;
+border: 1px solid var(--border);
+background: var(--surface2);
+color: var(--text2);
+border-radius: 6px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.9rem;
+transition: all 0.15s;
+}
+
+.modal-close:hover {
+color: var(--red);
+border-color: var(--red);
+}
+
+.modal-title {
+font-family: 'Syne', sans-serif;
+font-weight: 700;
+font-size: 1.2rem;
+margin-bottom: 18px;
+padding-right: 36px;
+}
+
+/* SUBJECT CARDS IN MODAL */
+.subject-list {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.subject-card {
+background: var(--surface2);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+overflow: hidden;
+transition: border-color 0.15s;
+}
+
+.subject-card.done {
+border-color: rgba(52, 211, 153, 0.3);
+}
+
+.subject-header {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 12px 14px;
+cursor: pointer;
+user-select: none;
+}
+
+.subject-checkbox {
+width: 18px;
+height: 18px;
+border: 2px solid var(--border);
+border-radius: 4px;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+transition: all 0.15s;
+cursor: pointer;
+font-size: 0.65rem;
+color: transparent;
+}
+
+.subject-card.done .subject-checkbox {
+background: var(--green);
+border-color: var(--green);
+color: #000;
+}
+
+.subject-name {
+flex: 1;
+font-weight: 500;
+font-size: 0.88rem;
+}
+
+.subject-card.done .subject-name {
+text-decoration: line-through;
+opacity: 0.5;
+}
+
+.subject-meta {
+font-size: 0.72rem;
+font-family: 'DM Mono', monospace;
+color: var(--text3);
+}
+
+.subject-toggle {
+font-size: 0.72rem;
+color: var(--text3);
+transition: transform 0.2s;
+pointer-events: none;
+margin-left: 6px;
+}
+
+.subject-card.open .subject-toggle {
+transform: rotate(180deg);
+}
+
+/* TOPICS */
+.topic-list {
+display: none;
+padding: 0 14px 12px;
+flex-direction: column;
+gap: 5px;
+}
+
+.subject-card.open .topic-list {
+display: flex;
+}
+
+.topic-row {
+display: flex;
+align-items: flex-start;
+gap: 9px;
+padding: 7px 9px;
+background: var(--bg);
+border: 1px solid var(--border);
+border-radius: 6px;
+transition: border-color 0.15s;
+}
+
+.topic-row.done {
+border-color: rgba(52, 211, 153, 0.2);
+}
+
+.topic-cb {
+width: 15px;
+height: 15px;
+border: 1.5px solid var(--border);
+border-radius: 3px;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+flex-shrink: 0;
+margin-top: 2px;
+transition: all 0.15s;
+font-size: 0.55rem;
+color: transparent;
+}
+
+.topic-row.done .topic-cb {
+background: var(--green);
+border-color: var(--green);
+color: #000;
+}
+
+.topic-info {
+flex: 1;
+min-width: 0;
+}
+
+.topic-name {
+font-size: 0.82rem;
+line-height: 1.4;
+}
+
+.topic-row.done .topic-name {
+text-decoration: line-through;
+opacity: 0.5;
+}
+
+.topic-prob {
+font-size: 0.62rem;
+font-family: 'DM Mono', monospace;
+margin-top: 2px;
+}
+
+.prob-muy-alta {
+color: #f87171;
+}
+
+.prob-alta {
+color: var(--amber);
+}
+
+.prob-media {
+color: var(--accent);
+}
+
+.prob-baja {
+color: var(--text3);
+}
+
+/* Resources */
+.topic-resources {
+display: flex;
+flex-direction: column;
+gap: 3px;
+margin-top: 6px;
+}
+
+.resource-item {
+display: flex;
+align-items: center;
+gap: 6px;
+font-size: 0.75rem;
+color: var(--text2);
+padding: 4px 7px;
+background: var(--surface);
+border-radius: 4px;
+border: 1px solid var(--border);
+}
+
+.resource-item a {
+color: var(--accent);
+text-decoration: none;
+}
+
+.resource-item a:hover {
+text-decoration: underline;
+}
+
+.resource-tag {
+font-size: 0.6rem;
+padding: 1px 5px;
+border-radius: 3px;
+font-family: 'DM Mono', monospace;
+flex-shrink: 0;
+}
+
+.tag-link {
+background: rgba(91, 138, 245, 0.15);
+color: var(--accent);
+}
+
+.tag-note {
+background: rgba(167, 139, 250, 0.15);
+color: var(--accent2);
+}
+
+.tag-summary {
+background: rgba(251, 191, 36, 0.15);
+color: var(--amber);
+}
+
+.tag-file {
+background: rgba(52, 211, 153, 0.15);
+color: var(--green);
+}
+
+.resource-del {
+margin-left: auto;
+background: none;
+border: none;
+color: var(--text3);
+cursor: pointer;
+padding: 1px;
+font-size: 0.7rem;
+transition: color 0.15s;
+}
+
+.resource-del:hover {
+color: var(--red);
+}
+
+.add-resource-form {
+display: none;
+gap: 5px;
+margin-top: 4px;
+flex-wrap: wrap;
+}
+
+.topic-row.adding-resource .add-resource-form {
+display: flex;
+}
+
+.add-resource-form select,
+.add-resource-form input {
+background: var(--surface);
+border: 1px solid var(--border);
+color: var(--text);
+border-radius: 4px;
+padding: 4px 7px;
+font-size: 0.75rem;
+font-family: 'DM Sans', sans-serif;
+outline: none;
+transition: border-color 0.15s;
+}
+
+.add-resource-form input {
+flex: 1;
+min-width: 100px;
+}
+
+.add-resource-form select:focus,
+.add-resource-form input:focus {
+border-color: var(--accent);
+}
+
+.btn-xs {
+padding: 4px 9px;
+border-radius: 4px;
+border: none;
+cursor: pointer;
+font-family: 'DM Sans', sans-serif;
+font-size: 0.75rem;
+font-weight: 500;
+transition: all 0.15s;
+}
+
+.btn-xs.primary {
+background: var(--accent);
+color: #fff;
+}
+
+.btn-xs.primary:hover {
+filter: brightness(1.1);
+}
+
+.btn-xs.ghost {
+background: var(--surface2);
+color: var(--text2);
+border: 1px solid var(--border);
+}
+
+.btn-xs.ghost:hover {
+border-color: var(--accent);
+color: var(--accent);
+}
+
+.topic-actions {
+display: flex;
+gap: 5px;
+margin-top: 5px;
+}
+
+.add-topic-row {
+display: flex;
+gap: 6px;
+margin-top: 3px;
+padding: 7px 9px;
+background: var(--bg);
+border: 1px dashed var(--border);
+border-radius: 6px;
+}
+
+.add-topic-row input {
+flex: 1;
+background: none;
+border: none;
+color: var(--text);
+font-family: 'DM Sans', sans-serif;
+font-size: 0.82rem;
+outline: none;
+}
+
+.add-topic-row input::placeholder {
+color: var(--text3);
+}
+
+/* ADD EVENT */
+.add-event-section {
+margin-top: 18px;
+border-top: 1px solid var(--border);
+padding-top: 14px;
+}
+
+.ae-title {
+font-size: 0.72rem;
+color: var(--text3);
+margin-bottom: 8px;
+font-family: 'DM Mono', monospace;
+letter-spacing: 0.5px;
+}
+
+.ae-row {
+display: flex;
+gap: 7px;
+}
+
+.ae-row select {
+flex: 1;
+background: var(--surface2);
+border: 1px solid var(--border);
+color: var(--text);
+border-radius: 6px;
+padding: 7px 9px;
+font-family: 'DM Sans', sans-serif;
+font-size: 0.83rem;
+outline: none;
+}
+
+.ae-row select:focus {
+border-color: var(--accent);
+}
+
+/* SUBJECTS PAGE */
+.subjects-container {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.subject-full-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+overflow: hidden;
+}
+
+.sfc-header {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 14px 16px;
+cursor: pointer;
+user-select: none;
+transition: background 0.15s;
+}
+
+.sfc-header:hover {
+background: var(--surface2);
+}
+
+.sfc-color {
+width: 9px;
+height: 9px;
+border-radius: 50%;
+flex-shrink: 0;
+}
+
+.sfc-name {
+flex: 1;
+font-family: 'Syne', sans-serif;
+font-weight: 700;
+font-size: 0.95rem;
+}
+
+.sfc-badge {
+font-size: 0.68rem;
+font-family: 'DM Mono', monospace;
+padding: 2px 7px;
+border-radius: 4px;
+margin-right: 4px;
+}
+
+.sfc-progress {
+font-size: 0.72rem;
+font-family: 'DM Mono', monospace;
+color: var(--text3);
+}
+
+.sfc-body {
+display: none;
+padding: 0 16px 14px;
+flex-direction: column;
+gap: 5px;
+}
+
+.subject-full-card.open .sfc-body {
+display: flex;
+}
+
+/* STATS */
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+gap: 10px;
+margin-bottom: 24px;
+}
+
+.stat-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 16px;
+}
+
+.stat-val {
+font-family: 'Syne', sans-serif;
+font-weight: 800;
+font-size: 1.8rem;
+letter-spacing: -1px;
+}
+
+.stat-label {
+font-size: 0.74rem;
+color: var(--text2);
+margin-top: 2px;
+}
+
+.subject-bar-list {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.sbar-item {
+display: flex;
+flex-direction: column;
+gap: 3px;
+}
+
+.sbar-label {
+display: flex;
+justify-content: space-between;
+font-size: 0.8rem;
+align-items: center;
+}
+
+.sbar-pct {
+color: var(--text3);
+font-family: 'DM Mono', monospace;
+font-size: 0.72rem;
+}
+
+.sbar-track {
+background: var(--surface2);
+border-radius: 99px;
+height: 6px;
+}
+
+.sbar-fill {
+height: 100%;
+border-radius: 99px;
+transition: width 0.5s;
+}
+
+/* FORM */
+.form-row {
+margin-bottom: 12px;
+}
+
+.form-label {
+font-size: 0.75rem;
+color: var(--text2);
+margin-bottom: 4px;
+display: block;
+}
+
+.form-input {
+width: 100%;
+background: var(--surface2);
+border: 1px solid var(--border);
+color: var(--text);
+border-radius: 7px;
+padding: 9px 11px;
+font-family: 'DM Sans', sans-serif;
+font-size: 0.88rem;
+outline: none;
+transition: border-color 0.15s;
+}
+
+.form-input:focus {
+border-color: var(--accent);
+}
+
+.btn {
+padding: 9px 16px;
+border-radius: 7px;
+border: none;
+cursor: pointer;
+font-family: 'DM Sans', sans-serif;
+font-weight: 500;
+font-size: 0.88rem;
+transition: all 0.15s;
+}
+
+.btn.primary {
+background: var(--accent);
+color: #fff;
+}
+
+.btn.primary:hover {
+filter: brightness(1.1);
+}
+
+.btn.ghost {
+background: none;
+color: var(--text2);
+border: 1px solid var(--border);
+}
+
+.btn.ghost:hover {
+border-color: var(--accent);
+color: var(--accent);
+}
+
+.btn-row {
+display: flex;
+gap: 7px;
+justify-content: flex-end;
+margin-top: 8px;
+}
+
+/* PLAN VIEW */
+.plan-week {
+margin-bottom: 24px;
+}
+
+.plan-week-header {
+font-family: 'Syne', sans-serif;
+font-weight: 700;
+font-size: 1rem;
+color: var(--accent);
+margin-bottom: 10px;
+padding-bottom: 6px;
+border-bottom: 1px solid var(--border);
+}
+
+.plan-grid {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+
+.plan-row {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+padding: 10px 14px;
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: 8px;
+}
+
+.plan-day-label {
+font-family: 'DM Mono', monospace;
+font-size: 0.72rem;
+color: var(--text3);
+min-width: 80px;
+padding-top: 2px;
+}
+
+.plan-subjects {
+display: flex;
+flex-wrap: wrap;
+gap: 5px;
+flex: 1;
+}
+
+.plan-subject-tag {
+font-size: 0.75rem;
+padding: 3px 9px;
+border-radius: 99px;
+font-weight: 500;
+}
+
+.plan-note {
+font-size: 0.75rem;
+color: var(--text3);
+flex-basis: 100%;
+margin-top: 4px;
+font-style: italic;
+}
+
+.empty-state {
+text-align: center;
+padding: 40px 20px;
+color: var(--text3);
+}
+
+.empty-state .es-icon {
+font-size: 2.2rem;
+margin-bottom: 10px;
+}
+
+.empty-state p {
+font-size: 0.88rem;
+}
+
+/* EXAM DATE BANNER */
+.exam-banner {
+background: linear-gradient(135deg, rgba(91, 138, 245, 0.12), rgba(167, 139, 250, 0.08));
+border: 1px solid rgba(91, 138, 245, 0.3);
+border-radius: 10px;
+padding: 14px 18px;
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.eb-icon {
+font-size: 1.4rem;
+}
+
+.eb-text {
+flex: 1;
+}
+
+.eb-title {
+font-family: 'Syne', sans-serif;
+font-weight: 700;
+font-size: 0.95rem;
+}
+
+.eb-sub {
+font-size: 0.78rem;
+color: var(--text2);
+margin-top: 2px;
+}
+
+.countdown {
+font-family: 'DM Mono', monospace;
+font-size: 1.3rem;
+font-weight: 500;
+color: var(--accent);
+}
+
+        /* --- FLASHCARDS --- */
+        .fc-modal { max-width: 800px; }
+        .fc-container { perspective: 1000px; width: 100%; min-height: 450px; margin: 20px 0; }
+        .fc-card { width: 100%; height: 100%; position: relative; transition: transform 0.6s; transform-style: preserve-3d; cursor: pointer; }
+        .fc-card.flipped { transform: rotateY(180deg); }
+        .fc-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; font-size: 1.25rem; font-weight: 500; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .fc-front { background: var(--surface2); color: var(--text); }
+        .fc-back { background: var(--accent); color: #fff; transform: rotateY(180deg); }
+        .fc-meta { font-size: 0.82rem; color: var(--accent); font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px; background: rgba(91, 138, 245, 0.1); padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(91, 138, 245, 0.2); }
+        .fc-back .fc-meta { color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+        .fc-controls { display: flex; gap: 12px; justify-content: center; align-items: center; margin-top: 20px; }
+        .fc-counter { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--text3); min-width: 60px; text-align: center; }
+        .fc-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-size: 1.2rem; }
+        .fc-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
+        .fc-btn:disabled { opacity: 0.3; pointer-events: none; }
+        .fc-data-box { width: 100%; height: 120px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 12px; font-family: 'DM Mono', monospace; font-size: 0.8rem; resize: none; outline: none; margin-bottom: 12px; }
+        .fc-data-box:focus { border-color: var(--accent); }
+        .fc-options { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 16px; }
+        .fc-opt-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 10px 14px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; text-align: left; cursor: pointer; transition: all 0.2s; }
+        .fc-opt-btn:hover { border-color: var(--accent); background: var(--surface2); }
+        .fc-opt-btn.correct { background: rgba(52, 211, 153, 0.15); border-color: var(--green); color: var(--green); }
+        .fc-opt-btn.wrong { background: rgba(248, 113, 113, 0.15); border-color: var(--red); color: var(--red); }
+        .fc-card.fade-out { opacity: 0; transition: opacity 1.2s ease; }
+</style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+        <div class="logo">
+            📚 UNAM · Área 3
+            <span class="sub">Economía SUA · Prep 2026</span>
+        </div>
+        <nav>
+            <div class="nav-section">
+                <div class="nav-label">Navegación</div>
+                <button class="nav-btn active" onclick="showPage('calendar',this)"><span class="icon">📅</span>
+                    Calendario</button>
+                <button class="nav-btn" onclick="showPage('plan',this)"><span class="icon">🗓</span> Plan de
+                    estudio</button>
+                <button class="nav-btn" onclick="showPage('subjects',this)"><span class="icon">📖</span> Materias <span
+                        class="badge" id="navBadge">—</span></button>
+                <button class="nav-btn" onclick="showPage('stats',this)"><span class="icon">📊</span> Progreso</button>
+            </div>
+            <div class="nav-section">
+                <div class="nav-label">Simuladores (IA)</div>
+                <button class="nav-btn" onclick="openFlashcards()"><span class="icon">✨</span> Tarjetas / Repaso</button>
+            </div>
+            <div class="nav-section">
+                <div class="nav-label">Acciones</div>
+                <button class="nav-btn" onclick="exportForAI()"><span class="icon">🤖</span> Exportar p/IA</button>
+                <button class="nav-btn" onclick="exportData()"><span class="icon">💾</span> Respaldo</button>
+                <button class="nav-btn" onclick="importData()"><span class="icon">📂</span> Importar</button>
+                <button class="nav-btn"
+                    onclick="if(confirm('¿Borrar todo el progreso?')){localStorage.clear();location.reload()}"
+                    style="color:var(--red)"><span class="icon">🗑</span> Reiniciar</button>
+            </div>
+        </nav>
+        <div class="progress-sidebar">
+            <div class="ps-label">Progreso global</div>
+            <div class="ps-bar">
+                <div class="ps-fill" id="sidebarProgress" style="width:0%"></div>
+            </div>
+            <div class="ps-pct" id="sidebarPct">0 / 0 temas</div>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div id="main">
+
+        <!-- CALENDAR PAGE -->
+        <div class="page active" id="page-calendar">
+            <div class="page-header">
+                <h1>📅 Calendario</h1>
+                <p>Haz clic en cualquier día para ver las materias asignadas, marcar temas y agregar recursos</p>
+            </div>
+            <div class="exam-banner">
+                <div class="eb-icon">🎯</div>
+                <div class="eb-text">
+                    <div class="eb-title">Examen de Selección UNAM · Área 3 · Economía SUA</div>
+                    <div class="eb-sub">120 reactivos · 9 materias · 8 semanas de preparación</div>
+                </div>
+                <div class="countdown" id="countdown">—</div>
+            </div>
+            <div class="month-nav">
+                <button class="month-btn" onclick="changeMonth(-1)">‹</button>
+                <h2 id="monthTitle">—</h2>
+                <button class="month-btn" onclick="changeMonth(1)">›</button>
+            </div>
+            <div class="calendar-grid" id="calHeaders"></div>
+            <div class="calendar-grid" id="calGrid"></div>
+        </div>
+
+        <!-- PLAN PAGE -->
+        <div class="page" id="page-plan">
+            <div class="page-header">
+                <h1>🗓 Plan de 8 Semanas</h1>
+                <p>Distribución recomendada según el temario oficial · Haz clic en un día para editar</p>
+            </div>
+            <div id="planContent"></div>
+        </div>
+
+        <!-- SUBJECTS PAGE -->
+        <div class="page" id="page-subjects">
+            <div class="page-header">
+                <h1>📖 Materias y Temas</h1>
+                <p>Todas las materias del examen. Marca los temas que ya dominas y agrega tus recursos de estudio</p>
+            </div>
+            <div class="subjects-container" id="subjectsList"></div>
+        </div>
+
+        <!-- STATS PAGE -->
+        <div class="page" id="page-stats" style="overflow-y:auto; height:100%;">
+            <div class="page-header">
+                <h1>📊 Progreso</h1>
+                <p>Seguimiento de tu avance por materia</p>
+            </div>
+            <div class="stats-grid" id="statsGrid"></div>
+            <h3 style="font-family:'Syne',sans-serif;font-size:0.95rem;margin-bottom:12px;color:var(--text2)">Por
+                materia</h3>
+            <div class="subject-bar-list" id="subjectBars"></div>
+            
+            <div style="margin-top:40px; padding-top:20px; border-top:1px solid var(--border);">
+                <h2 style="font-family:'Syne',sans-serif; font-size:1.4rem; color:var(--text); margin-bottom:8px;">✨ Rendimiento en Simulador (IA)</h2>
+                <p style="color:var(--text3); font-size:0.85rem; margin-bottom:20px;">Estadísticas de tus respuestas en las Flashcards y recomendaciones.</p>
+                <div id="fcGlobalStatsList" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:12px; margin-bottom:30px;"></div>
+                
+                <h3 style="font-family:'Syne',sans-serif; font-size:1.1rem; color:var(--text); margin-bottom:16px;">Historial de Respuestas</h3>
+                <div id="fcGlobalHistoryList" style="display:flex; flex-direction:column; gap:12px; padding-bottom:40px;"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- DAY MODAL -->
+    <div class="modal-overlay" id="dayModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('dayModal')">✕</button>
+            <div class="modal-title" id="dayModalTitle">Día</div>
+            <div class="subject-list" id="daySubjectList"></div>
+            <div class="add-event-section">
+                <div class="ae-title">AGREGAR MATERIA A ESTE DÍA</div>
+                <div class="ae-row">
+                    <select id="addSubjectSelect"></select>
+                    <button class="btn primary" onclick="addSubjectToDay()"
+                        style="white-space:nowrap;padding:7px 14px;font-size:0.83rem">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLASHCARDS MODAL -->
+    <div class="modal-overlay" id="flashcardsModal">
+      <div class="modal fc-modal" style="display:flex; flex-direction:column; max-height:90vh;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="modal-title" style="margin:0;">✨ Repaso Inteligente (IA)</div>
+            <button class="modal-close" style="position:static" onclick="closeModal('flashcardsModal')">✕</button>
+        </div>
+        
+        <div style="display:flex; gap:16px; margin-top:16px; margin-bottom:20px; border-bottom:1px solid var(--border);">
+            <button id="fcBtnRepaso" class="btn-xs ghost" style="border-bottom:2px solid var(--accent); border-radius:0; color:var(--text); padding-bottom:8px;" onclick="showFcTab('repaso')">🃏 Simulador</button>
+            <button id="fcBtnStats" class="btn-xs ghost" style="border-bottom:2px solid transparent; border-radius:0; color:var(--text2); padding-bottom:8px;" onclick="showFcTab('stats')">📊 Mis Resultados</button>
+        </div>
+
+        <!-- VISTA DE REPASO -->
+        <div id="fcTabViewRepaso" style="flex:1; overflow-y:auto; overflow-x:hidden;">
+            <div id="fcSetupArea">
+                <div style="background:var(--surface2); border:1px solid var(--border); padding:16px; border-radius:8px; margin-bottom:20px;">
+                    <div style="font-size:0.85rem; color:var(--text2); margin-bottom:10px;">
+                        <strong>1. Tu llave de Gemini (Gratis)</strong><br>
+                        Para que la magia funcione, pega aquí tu API Key de Google Gemini. Se guarda solo en tu navegador.
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <input type="password" id="geminiApiKey" class="fc-data-box" style="height:40px; margin:0;" placeholder="AIzaSy...">
+                        <button class="btn-xs ghost" style="padding:0 20px" onclick="saveApiKey()">Guardar Llave</button>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <button class="btn-xs primary" style="padding:10px 20px; font-size:0.9rem" onclick="generateWithGemini()" id="btnGenerateAI">✨ Auto-Generar Tarjetas</button>
+                    <span id="aiLoadingStatus" style="font-size:0.8rem; color:var(--accent); display:none;">Cerebro trabajando... ⏳</span>
+                </div>
+
+                <p style="font-size:0.75rem; color:var(--text3); margin-top:20px; cursor:pointer;" onclick="document.getElementById('manualJsonArea').style.display='block'">
+                    ¿Quieres pegar el JSON manually? Clic aquí.
+                </p>
+
+                <div id="manualJsonArea" style="display:none; margin-top:10px;">
+                    <textarea class="fc-data-box" id="fcDataInput" placeholder="Pega el arreglo [...] aquí..."></textarea>
+                    <button class="btn-xs ghost" onclick="loadFlashcards()">Cargar Manualmente</button>
+                </div>
+            </div>
+
+            <div id="fcArea" style="display:none">
+                <div style="display:flex; justify-content:flex-end; margin-bottom:12px;">
+                    <button class="btn-xs ghost" onclick="document.getElementById('fcSetupArea').style.display='block'; document.getElementById('fcArea').style.display='none';">⚙️ Volver a Configurar</button>
+                </div>
+                <div class="fc-container">
+                    <div class="fc-card" id="fcCard">
+                        <div class="fc-face fc-front">
+                            <div class="fc-meta" id="fcSubject">Materia · Tema</div>
+                            <div id="fcQuestion" style="margin-bottom:8px; font-weight:600;">¿Pregunta?</div>
+                            <div class="fc-options" id="fcOptions"></div>
+                            <button class="btn-xs ghost" style="margin-top:16px;" onclick="document.getElementById('fcCard').classList.toggle('flipped')">↻ Forzar Giro</button>
+                        </div>
+                        <div class="fc-face fc-back" onclick="document.getElementById('fcCard').classList.remove('flipped')">
+                            <div class="fc-meta" id="fcSubjectBack">Materia · Tema</div>
+                            <div id="fcAnswer">Respuesta</div>
+                            <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);margin-top:24px;">Haz clic para volver a la pregunta</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fc-controls">
+                    <button class="fc-btn" id="fcPrev" onclick="navFc(-1)">‹</button>
+                    <div class="fc-counter"><span id="fcCurr">0</span> / <span id="fcTotal">0</span></div>
+                    <button class="fc-btn" id="fcNext" onclick="navFc(1)">›</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA DE RESULTADOS -->
+        <div id="fcTabViewStats" style="display:none; flex:1; overflow-y:auto; overflow-x:hidden;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h3 style="font-size:1.1rem; color:var(--text); margin:0;">Estadísticas por Materia</h3>
+                <button class="btn-xs" style="background:var(--red); color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:0.75rem; cursor:pointer;" onclick="if(confirm('¿Reiniciar todas las estadísticas e historial?')) resetFcStats()">🗑 Reiniciar</button>
+            </div>
+            <div id="fcStatsList"></div>
+            <div style="margin-top:30px; border-top:1px solid var(--border); padding-top:20px;">
+                <h3 style="font-size:1.1rem; margin-bottom:12px; color:var(--text);">Últimas Tarjetas Respondidas</h3>
+                <div id="fcHistoryList" style="display:flex; flex-direction:column; gap:12px;"></div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <input type="file" id="importInput" accept=".json" style="display:none" onchange="handleImport(event)" />
+
+    <!-- NOTEBOOK MODAL -->
+    <div class="modal-overlay" id="nbModal">
+      <div class="modal" style="max-width:800px; width:95%; height:85vh; padding:0; display:flex; flex-direction:column; overflow:hidden;">
+        <div style="padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--surface2);">
+            <div class="modal-title" id="nbTitle" style="margin:0;">📓 Cuaderno Virtual</div>
+            <button class="modal-close" onclick="closeModal('nbModal')" style="position:static;">✕</button>
+        </div>
+        <div style="display:flex; flex:1; height:100%; overflow:hidden;">
+            <div style="flex:1; padding:20px; display:flex; flex-direction:column; background:var(--bg); overflow-y:auto;">
+                <input type="text" id="nbPageTitle" placeholder="Título del Apunte (ej. Repaso General)..." style="border:none; border-bottom:1px solid var(--border); background:transparent; color:var(--text); font-size:1.3rem; padding:8px 0; outline:none; margin-bottom:16px; font-weight:bold; font-family:'Syne', sans-serif;">
+                <textarea id="nbPageContent" placeholder="Escribe aquí tu resumen, ideas o notas... Toda la información que guardes aquí podrá ser leída por la IA para crear tus Flashcards." style="flex:1; border:none; resize:none; background:transparent; color:var(--text); font-size:1rem; font-family:var(--font-bg); line-height:1.6; outline:none;"></textarea>
+                <div style="display:flex; justify-content:flex-end; align-items:center; margin-top:20px; gap:12px;">
+                    <span id="nbSaveStatus" style="font-size:0.8rem; color:var(--green); opacity:0; transition: opacity 0.3s;">Guardado ✓</span>
+                    <button class="btn-xs primary" style="padding:10px 24px; font-size:1rem;" onclick="saveNotebookPage()">Mandar a Libretas 💾</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        // ─────────────────────────── TEMARIO UNAM ÁREA 3 ───────────────────────────
+        const TEMARIO = [
+            {
+                id: 'mat', name: 'Matemáticas', color: '#5b8af5', reactivos: 24, pct: '20%', semanas: '3-4',
+                temas: [
+                    {
+                        id: 'm1', name: 'Operaciones con números reales, complejos y expresiones algebraicas', subtemas: [
+                            { id: 'm1a', name: 'Clasificación de números reales: naturales, enteros, racionales, irracionales', prob: 'ALTA' },
+                            { id: 'm1b', name: 'Operaciones: suma, resta, multiplicación y división de expresiones algebraicas', prob: 'ALTA' },
+                            { id: 'm1c', name: 'Potencias y radicales: propiedades y simplificación', prob: 'ALTA' },
+                            { id: 'm1d', name: 'Números complejos: forma binómica, operaciones básicas', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'm2', name: 'Productos notables y factorización', subtemas: [
+                            { id: 'm2a', name: 'Factor común: monomio y polinomio', prob: 'MUY ALTA' },
+                            { id: 'm2b', name: 'Trinomio cuadrado perfecto y diferencia de cuadrados perfectos', prob: 'MUY ALTA' },
+                            { id: 'm2c', name: 'Trinomio de la forma ax² + bx + c', prob: 'MUY ALTA' },
+                            { id: 'm2d', name: 'Suma y diferencia de cubos perfectos', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'm3', name: 'Ecuaciones y sistemas de ecuaciones', subtemas: [
+                            { id: 'm3a', name: 'Ecuaciones de 1er grado: despeje y aplicaciones', prob: 'MUY ALTA' },
+                            { id: 'm3b', name: 'Ecuaciones de 2do grado: factorización y fórmula general', prob: 'MUY ALTA' },
+                            { id: 'm3c', name: 'Sistemas de 2 ecuaciones con 2 incógnitas: sustitución, reducción, igualación', prob: 'ALTA' },
+                            { id: 'm3d', name: 'Desigualdades e inecuaciones lineales', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'm4', name: 'Funciones algebraicas, exponenciales y logarítmicas', subtemas: [
+                            { id: 'm4a', name: 'Concepto de función: dominio, rango, notación f(x)', prob: 'ALTA' },
+                            { id: 'm4b', name: 'Álgebra de funciones: suma, resta, multiplicación, composición', prob: 'ALTA' },
+                            { id: 'm4c', name: 'Función exponencial: propiedades, gráfica, ecuaciones exponenciales', prob: 'ALTA' },
+                            { id: 'm4d', name: 'Función logarítmica: definición, propiedades, cambio de base', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'm5', name: 'Trigonometría', subtemas: [
+                            { id: 'm5a', name: 'Razones trigonométricas: seno, coseno, tangente y sus recíprocas', prob: 'MEDIA' },
+                            { id: 'm5b', name: 'Identidades fundamentales: pitagórica, cociente, recíproca', prob: 'MEDIA' },
+                            { id: 'm5c', name: 'Ley de senos y ley de cosenos', prob: 'MEDIA' },
+                            { id: 'm5d', name: 'Funciones trigonométricas: gráficas y período', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'm6', name: 'Geometría analítica: recta y lugar geométrico', subtemas: [
+                            { id: 'm6a', name: 'Distancia entre dos puntos, punto medio', prob: 'ALTA' },
+                            { id: 'm6b', name: 'Pendiente: definición, recta paralela y perpendicular', prob: 'ALTA' },
+                            { id: 'm6c', name: 'Ecuación de la recta: ordenada al origen, punto-pendiente, general', prob: 'ALTA' },
+                            { id: 'm6d', name: 'Intersección de rectas, ángulo entre rectas', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'm7', name: 'Cónicas ⭐ TEMA ESTRELLA (5-6 reactivos)', subtemas: [
+                            { id: 'm7a', name: 'Circunferencia: ecuación ordinaria y general, centro y radio', prob: 'MUY ALTA' },
+                            { id: 'm7b', name: 'Parábola: vértice en el origen y desplazado, foco, directriz', prob: 'MUY ALTA' },
+                            { id: 'm7c', name: 'Elipse: ecuación, vértices, focos, excentricidad', prob: 'MUY ALTA' },
+                            { id: 'm7d', name: 'Hipérbola: ecuación, vértices, focos, asíntotas', prob: 'MUY ALTA' },
+                            { id: 'm7e', name: 'Ecuación general de segundo grado: identificación de cónica', prob: 'ALTA' },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 'esp', name: 'Español', color: '#a78bfa', reactivos: 18, pct: '15%', semanas: '6',
+                temas: [
+                    {
+                        id: 'e1', name: 'Comprensión lectora', subtemas: [
+                            { id: 'e1a', name: 'Idea principal e ideas secundarias en textos expositivos y argumentativos', prob: 'MUY ALTA' },
+                            { id: 'e1b', name: 'Inferencias: deducciones a partir del texto', prob: 'MUY ALTA' },
+                            { id: 'e1c', name: 'Propósito comunicativo del autor', prob: 'MUY ALTA' },
+                            { id: 'e1d', name: 'Resumen y paráfrasis: diferencias', prob: 'ALTA' },
+                            { id: 'e1e', name: 'Tipos de texto: expositivo, argumentativo, narrativo, descriptivo, instructivo', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'e2', name: 'Funciones del lenguaje', subtemas: [
+                            { id: 'e2a', name: 'Referencial o informativa: transmitir datos objetivos', prob: 'MUY ALTA' },
+                            { id: 'e2b', name: 'Expresiva o emotiva: sentimientos del emisor', prob: 'MUY ALTA' },
+                            { id: 'e2c', name: 'Apelativa o conativa: influir en el receptor', prob: 'ALTA' },
+                            { id: 'e2d', name: 'Poética o estética: cuidado de la forma del mensaje', prob: 'ALTA' },
+                            { id: 'e2e', name: 'Fática o de contacto: verificar canal de comunicación', prob: 'MEDIA' },
+                            { id: 'e2f', name: 'Metalingüística: hablar sobre el lenguaje mismo', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'e3', name: 'Gramática y sintaxis', subtemas: [
+                            { id: 'e3a', name: 'Clases de palabras: sustantivo, verbo, adjetivo, adverbio, pronombre, preposición, conjunción', prob: 'MEDIA' },
+                            { id: 'e3b', name: 'Concordancia nominal y verbal', prob: 'MEDIA' },
+                            { id: 'e3c', name: 'Tipos de oraciones: simples, compuestas, coordinadas, subordinadas', prob: 'MEDIA' },
+                            { id: 'e3d', name: 'Uso correcto de pronombres relativos: que, quien, cual', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'e4', name: 'Ortografía', subtemas: [
+                            { id: 'e4a', name: 'Acentuación: agudas, graves, esdrújulas, sobresdrújulas', prob: 'ALTA' },
+                            { id: 'e4b', name: 'Acento diacrítico: él/el, tú/tu, más/mas, mi/mí', prob: 'ALTA' },
+                            { id: 'e4c', name: 'Uso de b/v: reglas básicas y excepciones frecuentes', prob: 'ALTA' },
+                            { id: 'e4d', name: 'Uso de h: palabras con h muda, grupos "hie-", "hue-"', prob: 'MEDIA' },
+                            { id: 'e4e', name: 'Uso de c/s/z: casos comunes de confusión', prob: 'MEDIA' },
+                            { id: 'e4f', name: 'Uso de g/j y x: reglas y excepciones', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'e5', name: 'Vocabulario y semántica', subtemas: [
+                            { id: 'e5a', name: 'Sinónimos y antónimos en contexto', prob: 'ALTA' },
+                            { id: 'e5b', name: 'Analogías: relación entre pares de palabras', prob: 'ALTA' },
+                            { id: 'e5c', name: 'Campo semántico y campo léxico', prob: 'MEDIA' },
+                            { id: 'e5d', name: 'Significado de palabras por contexto', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'e6', name: 'Redacción y formas del discurso', subtemas: [
+                            { id: 'e6a', name: 'Coherencia y cohesión textual: conectores, pronombres de referencia', prob: 'MEDIA' },
+                            { id: 'e6b', name: 'Discurso narrativo, descriptivo, argumentativo y expositivo: características', prob: 'MEDIA' },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 'hu', name: 'Historia Universal', color: '#f87171', reactivos: 14, pct: '11.6%', semanas: '2 y 7',
+                temas: [
+                    {
+                        id: 'hu1', name: 'Las revoluciones burguesas', subtemas: [
+                            { id: 'hu1a', name: 'Ilustración: Locke, Rousseau, Voltaire y sus ideas políticas', prob: 'MUY ALTA' },
+                            { id: 'hu1b', name: 'Revolución Norteamericana: causas, Declaración de Independencia', prob: 'ALTA' },
+                            { id: 'hu1c', name: 'Revolución Francesa: causas, etapas (Constituyente, Convención, Directorio), consecuencias', prob: 'MUY ALTA' },
+                            { id: 'hu1d', name: 'Napoleón Bonaparte: Imperio y expansión europea', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'hu2', name: 'Revolución Industrial e Imperialismo', subtemas: [
+                            { id: 'hu2a', name: 'Revolución Industrial: causas, desarrollo en Inglaterra, consecuencias sociales', prob: 'ALTA' },
+                            { id: 'hu2b', name: 'Surgimiento del proletariado y movimiento obrero', prob: 'ALTA' },
+                            { id: 'hu2c', name: 'Imperialismo: causas económicas, reparto de África y Asia', prob: 'ALTA' },
+                            { id: 'hu2d', name: 'Movimientos del S.XIX: liberalismo, socialismo, anarquismo, nacionalismo', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'hu3', name: 'Primera Guerra Mundial ⭐', subtemas: [
+                            { id: 'hu3a', name: 'Causas inmediatas y mediatas (Paz Armada, nacionalismo, colonialismo)', prob: 'MUY ALTA' },
+                            { id: 'hu3b', name: 'Asesinato del Archiduque Francisco Fernando en Sarajevo', prob: 'MUY ALTA' },
+                            { id: 'hu3c', name: 'Triple Alianza vs. Triple Entente (Francia, Rusia, Reino Unido)', prob: 'MUY ALTA' },
+                            { id: 'hu3d', name: 'Desarrollo, frentes de guerra, guerra de trincheras', prob: 'ALTA' },
+                            { id: 'hu3e', name: 'Tratado de Versalles y consecuencias: humillación alemana, mapas nuevos', prob: 'MUY ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'hu4', name: 'El mundo entre guerras', subtemas: [
+                            { id: 'hu4a', name: 'Revolución Rusa: causas, etapas, Lenin, Stalin, formación de la URSS', prob: 'MUY ALTA' },
+                            { id: 'hu4b', name: 'Crisis económica de 1929: causas (sobreproducción), consecuencias mundiales', prob: 'MUY ALTA' },
+                            { id: 'hu4c', name: 'Ascenso del fascismo italiano: Mussolini, características del fascismo', prob: 'ALTA' },
+                            { id: 'hu4d', name: 'Nazismo: Hitler, antisemitismo, características, diferencias con fascismo', prob: 'MUY ALTA' },
+                            { id: 'hu4e', name: 'Movimiento republicano en España: Guerra Civil Española', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'hu5', name: 'Segunda Guerra Mundial', subtemas: [
+                            { id: 'hu5a', name: 'Causas: Tratado de Versalles, crisis 29, expansionismo Nazi', prob: 'ALTA' },
+                            { id: 'hu5b', name: 'Bloques: Potencias del Eje (Alemania, Italia, Japón) vs Aliados', prob: 'ALTA' },
+                            { id: 'hu5c', name: 'Eventos clave: Blitzkrieg, batalla de Stalingrado, desembarco en Normandía', prob: 'ALTA' },
+                            { id: 'hu5d', name: 'Holocausto: persecución y exterminio de judíos y otros grupos', prob: 'ALTA' },
+                            { id: 'hu5e', name: 'Fin de la guerra: bombas atómicas en Hiroshima y Nagasaki, rendición de Japón', prob: 'ALTA' },
+                            { id: 'hu5f', name: 'Consecuencias: ONU, plan Marshall, inicio de la Guerra Fría', prob: 'MUY ALTA' },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 'hm', name: 'Historia de México', color: '#34d399', reactivos: 14, pct: '11.6%', semanas: '1 y 4',
+                temas: [
+                    {
+                        id: 'hm1', name: 'La Nueva España (S.XVI – principios S.XIX)', subtemas: [
+                            { id: 'hm1a', name: 'Conquista de México: Hernán Cortés, alianzas con tlaxcaltecas, caída de Tenochtitlan', prob: 'ALTA' },
+                            { id: 'hm1b', name: 'Organización colonial: Virreinato, Audiencia, Cabildo', prob: 'ALTA' },
+                            { id: 'hm1c', name: 'Sociedad de castas: españoles, criollos, mestizos, indígenas, afrodescendientes', prob: 'ALTA' },
+                            { id: 'hm1d', name: 'Economía novohispana: encomienda, hacienda, minería, comercio', prob: 'ALTA' },
+                            { id: 'hm1e', name: 'Evangelización y sincretismo religioso', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'hm2', name: 'Independencia de México (1810–1821)', subtemas: [
+                            { id: 'hm2a', name: 'Causas: Ilustración, Revolución Francesa, crisis española, desigualdad social', prob: 'MUY ALTA' },
+                            { id: 'hm2b', name: 'Etapa de Hidalgo: Grito de Dolores, Marcha del Ejército Insurgente, muerte', prob: 'MUY ALTA' },
+                            { id: 'hm2c', name: 'Etapa de Morelos: Sentimientos de la Nación, Congreso de Chilpancingo', prob: 'MUY ALTA' },
+                            { id: 'hm2d', name: 'Consumación: Plan de Iguala (Iturbide), Tres Garantías, Abrazo de Acatempan', prob: 'MUY ALTA' },
+                            { id: 'hm2e', name: 'Primer Imperio Mexicano de Agustín de Iturbide', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'hm3', name: 'México Independiente y la Reforma (1821–1876)', subtemas: [
+                            { id: 'hm3a', name: 'Inestabilidad política: República Federal vs Central, intervenciones de Santa Anna', prob: 'MUY ALTA' },
+                            { id: 'hm3b', name: 'Intervención Norteamericana (1846-1848): pérdida de más de la mitad del territorio', prob: 'ALTA' },
+                            { id: 'hm3c', name: 'La Reforma Liberal: Benito Juárez, Leyes de Reforma (Ley Lerdo, Ley Juárez, Ley Iglesias)', prob: 'MUY ALTA' },
+                            { id: 'hm3d', name: 'Constitución de 1857: principios liberales', prob: 'ALTA' },
+                            { id: 'hm3e', name: 'Intervención Francesa y Segundo Imperio: Maximiliano de Habsburgo', prob: 'ALTA' },
+                            { id: 'hm3f', name: 'Restauración de la República: Juárez y Lerdo de Tejada', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'hm4', name: 'El Porfiriato (1876–1911)', subtemas: [
+                            { id: 'hm4a', name: 'Modernización: ferrocarriles, telégrafos, industria, inversión extranjera', prob: 'ALTA' },
+                            { id: 'hm4b', name: 'Política: reelección, paz porfiriana, represión, lema "poca política, mucha administración"', prob: 'ALTA' },
+                            { id: 'hm4c', name: 'Modelo económico: exportador-primario, haciendas, endeudamiento con extranjeros', prob: 'ALTA' },
+                            { id: 'hm4d', name: 'Desigualdad social: pobreza del campo, peones acasillados', prob: 'MEDIA' },
+                            { id: 'hm4e', name: 'Antecedentes de la Revolución: huelgas de Cananea y Río Blanco, Magonismo', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'hm5', name: 'La Revolución Mexicana (1910–1917) ⭐', subtemas: [
+                            { id: 'hm5a', name: 'Plan de San Luis Potosí: Madero, causas del movimiento', prob: 'MUY ALTA' },
+                            { id: 'hm5b', name: 'Zapata y el Plan de Ayala: tierra y libertad, agrarismo', prob: 'MUY ALTA' },
+                            { id: 'hm5c', name: 'Villa y el ejército del norte: División del Norte', prob: 'ALTA' },
+                            { id: 'hm5d', name: 'Asesinato de Madero: Huerta, la Decena Trágica', prob: 'MUY ALTA' },
+                            { id: 'hm5e', name: 'Constitucionalismo: Venustiano Carranza, Ejército Constitucionalista', prob: 'ALTA' },
+                            { id: 'hm5f', name: 'Constitución de 1917: Art. 3 (educación), 27 (tierra y subsuelo), 123 (trabajo)', prob: 'MUY ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'hm6', name: 'La reconstrucción nacional (1917–1940)', subtemas: [
+                            { id: 'hm6a', name: 'Caudillismo: Obregón y Calles, Maximato', prob: 'MUY ALTA' },
+                            { id: 'hm6b', name: 'Conflicto Cristero (1926-1929): causas religiosas', prob: 'ALTA' },
+                            { id: 'hm6c', name: 'Cardenismo (1934-1940): reparto agrario masivo, creación del PRM', prob: 'MUY ALTA' },
+                            { id: 'hm6d', name: 'Expropiación Petrolera (1938): causas, respuesta internacional, consecuencias', prob: 'MUY ALTA' },
+                            { id: 'hm6e', name: 'Educación socialista y reforma al Art. 3', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'hm7', name: 'México posrevolucionario y contemporáneo (1940–2000)', subtemas: [
+                            { id: 'hm7a', name: 'Milagro mexicano (1940-1970): modelo ISI, industrialización, desarrollo estabilizador', prob: 'MUY ALTA' },
+                            { id: 'hm7b', name: 'Movimiento estudiantil de 1968: Tlatelolco, represión', prob: 'MUY ALTA' },
+                            { id: 'hm7c', name: 'Petrolización con López Portillo (1976-82): boom y crisis del petróleo', prob: 'ALTA' },
+                            { id: 'hm7d', name: 'Crisis de 1982: deuda externa, devaluación, nacionalización banca', prob: 'ALTA' },
+                            { id: 'hm7e', name: 'Neoliberalismo: privatizaciones, firma del TLCAN (1994), reforma al Art. 27 (Salinas)', prob: 'MUY ALTA' },
+                            { id: 'hm7f', name: 'EZLN y Chiapas (1994), alternancia política: Fox 2000', prob: 'ALTA' },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 'fis', name: 'Física', color: '#fbbf24', reactivos: 10, pct: '8.3%', semanas: '5',
+                temas: [
+                    {
+                        id: 'f1', name: 'Cinemática', subtemas: [
+                            { id: 'f1a', name: 'MRU: velocidad constante v = d/t', prob: 'ALTA' },
+                            { id: 'f1b', name: 'MRUV: aceleración, ecuaciones del movimiento', prob: 'MUY ALTA' },
+                            { id: 'f1c', name: 'Caída libre y tiro vertical', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'f2', name: 'Leyes de Newton', subtemas: [
+                            { id: 'f2a', name: '1ª ley (inercia): definición y ejemplos', prob: 'MUY ALTA' },
+                            { id: 'f2b', name: '2ª ley (F = m·a): cálculo de fuerza, masa o aceleración', prob: 'MUY ALTA' },
+                            { id: 'f2c', name: '3ª ley (acción-reacción): ejemplos prácticos', prob: 'ALTA' },
+                            { id: 'f2d', name: 'Peso vs masa: P = m·g', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'f3', name: 'Trabajo, energía y conservación', subtemas: [
+                            { id: 'f3a', name: 'Trabajo: W = F·d·cos θ', prob: 'ALTA' },
+                            { id: 'f3b', name: 'Energía cinética: Ec = ½mv²', prob: 'ALTA' },
+                            { id: 'f3c', name: 'Energía potencial gravitacional: Ep = mgh', prob: 'ALTA' },
+                            { id: 'f3d', name: 'Principio de conservación de energía', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'f4', name: 'Ondas y sonido', subtemas: [
+                            { id: 'f4a', name: 'Características: amplitud, frecuencia, período, longitud de onda', prob: 'MEDIA' },
+                            { id: 'f4b', name: 'Velocidad de onda: v = f · λ', prob: 'MEDIA' },
+                            { id: 'f4c', name: 'Tipos: mecánicas y electromagnéticas, transversales y longitudinales', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'f5', name: 'Termodinámica', subtemas: [
+                            { id: 'f5a', name: 'Temperatura, calor y sus diferencias conceptuales', prob: 'MEDIA' },
+                            { id: 'f5b', name: 'Escalas: Celsius, Fahrenheit, Kelvin y conversiones', prob: 'MEDIA' },
+                            { id: 'f5c', name: 'Leyes de la termodinámica: enunciados básicos', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'f6', name: 'Electromagnetismo', subtemas: [
+                            { id: 'f6a', name: 'Cargas eléctricas: positivas y negativas, atracción y repulsión', prob: 'BAJA' },
+                            { id: 'f6b', name: 'Ley de Coulomb: F = k·q1·q2 / r²', prob: 'BAJA' },
+                            { id: 'f6c', name: 'Campo eléctrico y magnetismo: conceptos básicos', prob: 'BAJA' },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 'qui', name: 'Química', color: '#fb923c', reactivos: 10, pct: '8.3%', semanas: '5',
+                temas: [
+                    {
+                        id: 'q1', name: 'Estructura atómica', subtemas: [
+                            { id: 'q1a', name: 'Modelo atómico de Bohr: niveles de energía', prob: 'MUY ALTA' },
+                            { id: 'q1b', name: 'Partículas subatómicas: protón (+), neutrón (0), electrón (-)', prob: 'MUY ALTA' },
+                            { id: 'q1c', name: 'Número atómico (Z) y número de masa (A)', prob: 'MUY ALTA' },
+                            { id: 'q1d', name: 'Isótopos: mismo Z, diferente A', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'q2', name: 'Tabla periódica', subtemas: [
+                            { id: 'q2a', name: 'Grupos y períodos: tendencias periódicas', prob: 'MUY ALTA' },
+                            { id: 'q2b', name: 'Metales, no metales y metaloides', prob: 'ALTA' },
+                            { id: 'q2c', name: 'Propiedades: electronegatividad, radio atómico, energía de ionización', prob: 'ALTA' },
+                            { id: 'q2d', name: 'Elementos más importantes: H, C, N, O, Na, Fe, Cu, Au, Cl, Ca', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'q3', name: 'Enlace químico', subtemas: [
+                            { id: 'q3a', name: 'Enlace iónico: metal + no metal, transferencia de electrones', prob: 'ALTA' },
+                            { id: 'q3b', name: 'Enlace covalente: no metal + no metal, compartición de electrones', prob: 'ALTA' },
+                            { id: 'q3c', name: 'Enlace metálico: entre metales', prob: 'MEDIA' },
+                            { id: 'q3d', name: 'Regla del octeto y estructura de Lewis (básico)', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'q4', name: 'Reacciones químicas', subtemas: [
+                            { id: 'q4a', name: 'Tipos: síntesis, descomposición, sustitución simple y doble, neutralización', prob: 'ALTA' },
+                            { id: 'q4b', name: 'Balanceo de ecuaciones: método de tanteo', prob: 'ALTA' },
+                            { id: 'q4c', name: 'Ley de conservación de la materia (Lavoisier)', prob: 'ALTA' },
+                            { id: 'q4d', name: 'Reactivo limitante: concepto básico', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'q5', name: 'Ácidos, bases y pH', subtemas: [
+                            { id: 'q5a', name: 'Definición Arrhenius: ácido da H+, base da OH-', prob: 'MUY ALTA' },
+                            { id: 'q5b', name: 'Escala de pH: 0-14, neutro=7, ácido<7, base>7', prob: 'MUY ALTA' },
+                            { id: 'q5c', name: 'Neutralización: ácido + base → sal + agua', prob: 'ALTA' },
+                            { id: 'q5d', name: 'Ejemplos cotidianos: vinagre (ácido), leche de magnesia (base)', prob: 'ALTA' },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 'bio', name: 'Biología', color: '#38bdf8', reactivos: 10, pct: '8.3%', semanas: '5',
+                temas: [
+                    {
+                        id: 'b1', name: 'La célula', subtemas: [
+                            { id: 'b1a', name: 'Célula procariota vs eucariota: diferencias clave', prob: 'MUY ALTA' },
+                            { id: 'b1b', name: 'Organelos: mitocondria (energía), ribosoma (proteínas), cloroplasto (fotosíntesis), núcleo (ADN)', prob: 'MUY ALTA' },
+                            { id: 'b1c', name: 'Membrana plasmática: estructura y función (transporte)', prob: 'ALTA' },
+                            { id: 'b1d', name: 'Célula animal vs vegetal: diferencias (pared celular, cloroplastos, vacuola)', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'b2', name: 'Metabolismo celular', subtemas: [
+                            { id: 'b2a', name: 'Fotosíntesis: ecuación, reactivos, productos, cloroplasto, organismos autótrofos', prob: 'ALTA' },
+                            { id: 'b2b', name: 'Respiración celular: ecuación, reactivos, productos, mitocondria, ATP', prob: 'ALTA' },
+                            { id: 'b2c', name: 'Diferencia: fotosíntesis (almacena energía) vs respiración (libera energía)', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'b3', name: 'Reproducción celular y del organismo', subtemas: [
+                            { id: 'b3a', name: 'Mitosis: división para crecimiento, 2 células hijas con mismo número cromosómico', prob: 'MUY ALTA' },
+                            { id: 'b3b', name: 'Meiosis: división para reproducción sexual, 4 células hijas con mitad de cromosomas (gametos)', prob: 'MUY ALTA' },
+                            { id: 'b3c', name: 'Reproducción asexual y sexual: ventajas de cada una', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'b4', name: 'Genética y herencia', subtemas: [
+                            { id: 'b4a', name: 'Leyes de Mendel: segregación y distribución independiente', prob: 'ALTA' },
+                            { id: 'b4b', name: 'Cuadro de Punnett: cruces monohíbridos y dihíbridos básicos', prob: 'ALTA' },
+                            { id: 'b4c', name: 'ADN: estructura de doble hélice, bases nitrogenadas (A-T, C-G)', prob: 'ALTA' },
+                            { id: 'b4d', name: 'Mutaciones: definición, causas, consecuencias', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'b5', name: 'Evolución y ecosistemas', subtemas: [
+                            { id: 'b5a', name: 'Darwin: selección natural, adaptación, variación, supervivencia del más apto', prob: 'MEDIA' },
+                            { id: 'b5b', name: 'Evidencias de la evolución: fósiles, anatomía comparada, bioquímica', prob: 'MEDIA' },
+                            { id: 'b5c', name: 'Ecosistema: factores bióticos y abióticos, cadenas y redes tróficas', prob: 'MEDIA' },
+                            { id: 'b5d', name: 'Biodiversidad y su importancia, problemas ambientales', prob: 'MEDIA' },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 'geo', name: 'Geografía', color: '#e879f9', reactivos: 10, pct: '8.3%', semanas: '6',
+                temas: [
+                    {
+                        id: 'g1', name: 'Geografía física', subtemas: [
+                            { id: 'g1a', name: 'Relieve: montañas, valles, mesetas, llanuras, depresiones', prob: 'MUY ALTA' },
+                            { id: 'g1b', name: 'Climas: ecuatorial, tropical, desértico, mediterráneo, polar, templado', prob: 'MUY ALTA' },
+                            { id: 'g1c', name: 'Hidrografía: principales ríos y lagos del mundo y de México', prob: 'ALTA' },
+                            { id: 'g1d', name: 'Biomas: selva, bosque, desierto, tundra, pradera', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'g2', name: 'Continentes y regiones del mundo', subtemas: [
+                            { id: 'g2a', name: 'Localización de continentes, océanos y mares principales', prob: 'ALTA' },
+                            { id: 'g2b', name: 'Países y capitales de mayor importancia mundial', prob: 'ALTA' },
+                            { id: 'g2c', name: 'Cadenas montañosas: Andes, Himalaya, Alpes, Rocallosas', prob: 'ALTA' },
+                            { id: 'g2d', name: 'Ríos más importantes: Amazonas, Nilo, Yangtsé, Mississippi', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'g3', name: 'Demografía y geografía humana', subtemas: [
+                            { id: 'g3a', name: 'Crecimiento poblacional: natalidad, mortalidad, tasa de crecimiento', prob: 'ALTA' },
+                            { id: 'g3b', name: 'Distribución: países más poblados (China, India, EE.UU.)', prob: 'ALTA' },
+                            { id: 'g3c', name: 'Migración: causas, tipos (interna/internacional, voluntaria/forzada)', prob: 'ALTA' },
+                            { id: 'g3d', name: 'Urbanización: megalópolis, megaciudades, problemas urbanos', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'g4', name: 'Recursos naturales y medio ambiente', subtemas: [
+                            { id: 'g4a', name: 'Recursos renovables: agua, solar, viento, biomasa', prob: 'MUY ALTA' },
+                            { id: 'g4b', name: 'Recursos no renovables: petróleo, carbón, gas natural, minerales', prob: 'MUY ALTA' },
+                            { id: 'g4c', name: 'Problemas ambientales: calentamiento global, deforestación, contaminación del agua', prob: 'MUY ALTA' },
+                            { id: 'g4d', name: 'Desarrollo sustentable: definición y ejemplos', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'g5', name: 'Geografía económica', subtemas: [
+                            { id: 'g5a', name: 'Sectores económicos: primario (agro), secundario (industria), terciario (servicios)', prob: 'MEDIA' },
+                            { id: 'g5b', name: 'PIB: definición, países con mayor PIB', prob: 'MEDIA' },
+                            { id: 'g5c', name: 'Bloques económicos: UE, TLCAN, ASEAN, MERCOSUR, OPEP', prob: 'MEDIA' },
+                            { id: 'g5d', name: 'Comercio internacional: importaciones, exportaciones, balanza comercial', prob: 'MEDIA' },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 'lit', name: 'Literatura', color: '#f59e0b', reactivos: 10, pct: '8.3%', semanas: '6',
+                temas: [
+                    {
+                        id: 'l1', name: 'Géneros literarios', subtemas: [
+                            { id: 'l1a', name: 'Narrativa: cuento, novela, crónica, leyenda, fábula — características de cada uno', prob: 'MUY ALTA' },
+                            { id: 'l1b', name: 'Lírica: poema, oda, elegía, soneto — características', prob: 'ALTA' },
+                            { id: 'l1c', name: 'Dramática: tragedia, comedia, drama, auto sacramental', prob: 'ALTA' },
+                            { id: 'l1d', name: 'Épica / formas mixtas: epopeya, romance', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'l2', name: 'Figuras retóricas ⭐', subtemas: [
+                            { id: 'l2a', name: 'Metáfora: comparación sin "como" (identificación directa)', prob: 'MUY ALTA' },
+                            { id: 'l2b', name: 'Símil o comparación: usa "como", "cual", "parece"', prob: 'MUY ALTA' },
+                            { id: 'l2c', name: 'Hipérbole: exageración con fin expresivo', prob: 'MUY ALTA' },
+                            { id: 'l2d', name: 'Personificación o prosopopeya: dar cualidades humanas a seres no humanos', prob: 'ALTA' },
+                            { id: 'l2e', name: 'Anáfora: repetición al inicio de versos o frases', prob: 'ALTA' },
+                            { id: 'l2f', name: 'Aliteración y oxímoron: repetición de sonidos; contradicción en una frase', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'l3', name: 'Movimientos literarios', subtemas: [
+                            { id: 'l3a', name: 'Clasicismo griego y romano: características generales', prob: 'ALTA' },
+                            { id: 'l3b', name: 'Romanticismo (S.XIX): sentimiento, naturaleza, libertad, Bécquer', prob: 'ALTA' },
+                            { id: 'l3c', name: 'Realismo (S.XIX): descripción objetiva de la sociedad, Balzac, Tolstói', prob: 'ALTA' },
+                            { id: 'l3d', name: 'Modernismo (fin S.XIX): Rubén Darío, Amado Nervo, esteticismo', prob: 'ALTA' },
+                            { id: 'l3e', name: 'Vanguardias (S.XX): surrealismo, ultraísmo, creacionismo', prob: 'MEDIA' },
+                        ]
+                    },
+                    {
+                        id: 'l4', name: 'Literatura mexicana', subtemas: [
+                            { id: 'l4a', name: 'Época prehispánica: Popol Vuh, poesía náhuatl', prob: 'ALTA' },
+                            { id: 'l4b', name: 'Colonial: Sor Juana Inés de la Cruz (lírica, teatro, prosa)', prob: 'ALTA' },
+                            { id: 'l4c', name: 'S.XIX: Ignacio M. Altamirano, costumbrismo, Guillermo Prieto', prob: 'MEDIA' },
+                            { id: 'l4d', name: 'S.XX: Juan Rulfo (Pedro Páramo, El llano en llamas), Octavio Paz (El laberinto de la soledad)', prob: 'MUY ALTA' },
+                            { id: 'l4e', name: 'Carlos Fuentes (La región más transparente), José Revueltas', prob: 'ALTA' },
+                        ]
+                    },
+                    {
+                        id: 'l5', name: 'Literatura hispanoamericana', subtemas: [
+                            { id: 'l5a', name: 'Modernismo: Rubén Darío (Nicaragua), José Martí (Cuba)', prob: 'MEDIA' },
+                            { id: 'l5b', name: 'El Boom latinoamericano (S.XX): características del realismo mágico', prob: 'ALTA' },
+                            { id: 'l5c', name: 'Gabriel García Márquez (Colombia): Cien años de soledad', prob: 'ALTA' },
+                            { id: 'l5d', name: 'Mario Vargas Llosa (Perú), Julio Cortázar (Argentina), Carlos Fuentes', prob: 'ALTA' },
+                            { id: 'l5e', name: 'Pablo Neruda (Chile): poesía comprometida', prob: 'MEDIA' },
+                        ]
+                    },
+                ]
+            },
+        ];
+
+        // ──────── PLAN DE 8 SEMANAS ────────
+        // Distribución por semanas según el temario oficial
+        // Examen aproximado finales de mayo 2026 → inicio estudio: ~23 marzo 2026
+        const PLAN_WEEKS = [
+            {
+                label: 'Semana 1 · 23–29 Mar', note: 'Historia de México: Nueva España + Independencia + Reforma',
+                days: [
+                    { date: '2026-03-23', subjects: ['hm'], note: 'Historia MX — Nueva España (S.XVI-XIX)' },
+                    { date: '2026-03-24', subjects: ['hm'], note: 'Historia MX — Independencia (1810-1821)' },
+                    { date: '2026-03-25', subjects: ['hm'], note: 'Historia MX — México Independiente y Reforma' },
+                    { date: '2026-03-26', subjects: ['hm'], note: 'Historia MX — El Porfiriato' },
+                    { date: '2026-03-27', subjects: ['hm'], note: 'Historia MX — Revolución Mexicana (1910-1917)' },
+                    { date: '2026-03-28', subjects: ['hm'], note: 'Historia MX — Reconstrucción nacional (1917-1940)' },
+                    { date: '2026-03-29', subjects: ['hm'], note: 'Historia MX — México posrevolucionario · Repaso + Simulacro' },
+                ]
+            },
+            {
+                label: 'Semana 2 · 30 Mar–5 Abr', note: 'Historia Universal',
+                days: [
+                    { date: '2026-03-30', subjects: ['hu'], note: 'Historia Univ — Revoluciones burguesas' },
+                    { date: '2026-03-31', subjects: ['hu'], note: 'Historia Univ — Rev. Industrial e Imperialismo' },
+                    { date: '2026-04-01', subjects: ['hu'], note: 'Historia Univ — Primera Guerra Mundial ⭐' },
+                    { date: '2026-04-02', subjects: ['hu'], note: 'Historia Univ — El mundo entre guerras' },
+                    { date: '2026-04-03', subjects: ['hu'], note: 'Historia Univ — Segunda Guerra Mundial' },
+                    { date: '2026-04-04', subjects: ['hu', 'hm'], note: 'Repaso Historia Universal + Mini simulacro Historia' },
+                    { date: '2026-04-05', subjects: ['hu', 'hm'], note: 'Simulacro: Historia Univ + Historia MX (28 reactivos)' },
+                ]
+            },
+            {
+                label: 'Semana 3 · 6–12 Abr', note: 'Matemáticas I',
+                days: [
+                    { date: '2026-04-06', subjects: ['mat'], note: 'Mat — Operaciones y expresiones algebraicas' },
+                    { date: '2026-04-07', subjects: ['mat'], note: 'Mat — Productos notables y factorización' },
+                    { date: '2026-04-08', subjects: ['mat'], note: 'Mat — Ecuaciones y sistemas' },
+                    { date: '2026-04-09', subjects: ['mat'], note: 'Mat — Funciones (algebraicas, exp, log)' },
+                    { date: '2026-04-10', subjects: ['mat'], note: 'Mat — Trigonometría' },
+                    { date: '2026-04-11', subjects: ['mat'], note: 'Mat — Geometría analítica y recta' },
+                    { date: '2026-04-12', subjects: ['mat'], note: 'Simulacro Matemáticas 24 reactivos' },
+                ]
+            },
+            {
+                label: 'Semana 4 · 13–19 Abr', note: 'Matemáticas II + Historia MX repaso',
+                days: [
+                    { date: '2026-04-13', subjects: ['mat'], note: 'Mat — Cónicas: Circunferencia y Parábola ⭐' },
+                    { date: '2026-04-14', subjects: ['mat'], note: 'Mat — Cónicas: Elipse e Hipérbola ⭐' },
+                    { date: '2026-04-15', subjects: ['mat'], note: 'Mat — Ecuación general de segundo grado' },
+                    { date: '2026-04-16', subjects: ['mat', 'hm'], note: 'Repaso Matemáticas + Historia MX repaso' },
+                    { date: '2026-04-17', subjects: ['mat', 'hm'], note: 'Repaso bloques 1-4: Matemáticas + Historia MX' },
+                    { date: '2026-04-18', subjects: ['mat', 'hm'], note: 'Simulacro combinado Mat + Historia MX (38 rct.)' },
+                    { date: '2026-04-19', subjects: ['mat'], note: 'Refuerzo temas débiles de matemáticas' },
+                ]
+            },
+            {
+                label: 'Semana 5 · 20–26 Abr', note: 'Ciencias: Física · Química · Biología',
+                days: [
+                    { date: '2026-04-20', subjects: ['fis'], note: 'Física — Cinemática y Leyes de Newton' },
+                    { date: '2026-04-21', subjects: ['fis'], note: 'Física — Trabajo, energía, ondas, termodinámica' },
+                    { date: '2026-04-22', subjects: ['qui'], note: 'Química — Estructura atómica y Tabla periódica' },
+                    { date: '2026-04-23', subjects: ['qui'], note: 'Química — Enlace, Reacciones, Ácidos y pH' },
+                    { date: '2026-04-24', subjects: ['bio'], note: 'Biología — Célula y Metabolismo' },
+                    { date: '2026-04-25', subjects: ['bio'], note: 'Biología — Reproducción, Genética, Evolución' },
+                    { date: '2026-04-26', subjects: ['fis', 'qui', 'bio'], note: 'Simulacro Ciencias: Física+Química+Biología (30 rct.)' },
+                ]
+            },
+            {
+                label: 'Semana 6 · 27 Abr–3 May', note: 'Español · Literatura · Geografía',
+                days: [
+                    { date: '2026-04-27', subjects: ['esp'], note: 'Español — Comprensión lectora + Funciones del lenguaje' },
+                    { date: '2026-04-28', subjects: ['esp'], note: 'Español — Gramática, Ortografía, Semántica' },
+                    { date: '2026-04-29', subjects: ['lit'], note: 'Literatura — Géneros literarios + Figuras retóricas ⭐' },
+                    { date: '2026-04-30', subjects: ['lit'], note: 'Literatura — Movimientos + Literatura mexicana e hispanoamericana' },
+                    { date: '2026-05-01', subjects: ['geo'], note: 'Geografía — Geografía física + Continentes' },
+                    { date: '2026-05-02', subjects: ['geo'], note: 'Geografía — Demografía + Recursos + Geografía económica' },
+                    { date: '2026-05-03', subjects: ['esp', 'lit', 'geo'], note: 'Simulacro: Español+Literatura+Geografía (38 rct.)' },
+                ]
+            },
+            {
+                label: 'Semana 7 · 4–10 May', note: 'Historia Universal repaso + Examen completo',
+                days: [
+                    { date: '2026-05-04', subjects: ['hu'], note: 'Historia Univ — Repaso 1GM, Entreguerras, 2GM' },
+                    { date: '2026-05-05', subjects: ['hu', 'hm'], note: 'Repaso Historia completa: fechas y personajes clave' },
+                    { date: '2026-05-06', subjects: ['mat', 'esp'], note: 'Repaso Matemáticas + Español' },
+                    { date: '2026-05-07', subjects: ['fis', 'qui', 'bio'], note: 'Repaso Ciencias' },
+                    { date: '2026-05-08', subjects: ['lit', 'geo'], note: 'Repaso Literatura + Geografía' },
+                    { date: '2026-05-09', subjects: ['mat', 'hu', 'hm', 'esp', 'fis', 'qui', 'bio', 'geo', 'lit'], note: 'SIMULACRO COMPLETO 120 reactivos (3 horas exactas) 🎯' },
+                    { date: '2026-05-10', subjects: ['mat', 'hu', 'hm'], note: 'Revisión de errores del simulacro — Temas fuertes' },
+                ]
+            },
+            {
+                label: 'Semana 8 · 11–17 May', note: 'Ajuste final · Simulacro de cierre',
+                days: [
+                    { date: '2026-05-11', subjects: ['mat', 'hm'], note: 'Refuerzo: temas con más errores en simulacro' },
+                    { date: '2026-05-12', subjects: ['hu', 'esp'], note: 'Refuerzo Historia Universal + Español' },
+                    { date: '2026-05-13', subjects: ['fis', 'qui'], note: 'Repaso rápido Física y Química' },
+                    { date: '2026-05-14', subjects: ['bio', 'geo', 'lit'], note: 'Repaso rápido Biología + Geografía + Literatura' },
+                    { date: '2026-05-15', subjects: ['mat', 'hu', 'hm', 'esp', 'fis', 'qui', 'bio', 'geo', 'lit'], note: 'ÚLTIMO SIMULACRO COMPLETO 120 reactivos 🎯 Meta: +90' },
+                    { date: '2026-05-16', subjects: ['mat', 'hm', 'hu'], note: 'Solo repaso ligero — NO estudiar de nuevo' },
+                    { date: '2026-05-17', subjects: [], note: '🌙 Descanso. Prepara credencial, lápices, goma. Duerme bien.' },
+                ]
+            },
+        ];
+
+        // ──────────────────────── STATE ────────────────────────
+        let state = { topicDone: {}, calendar: {}, resources: {} };
+        let currentYear, currentMonth, currentDayKey;
+        const MONTHS_ES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        const DAYS_ES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+
+        function init() {
+            const saved = localStorage.getItem('unam_planner_v3');
+            if (saved) { try { state = JSON.parse(saved); } catch (e) { } }
+            // Init calendar from plan
+            PLAN_WEEKS.forEach(w => w.days.forEach(d => {
+                if (d.subjects.length && !state.calendar[d.date]) state.calendar[d.date] = [...d.subjects];
+            }));
+            const now = new Date();
+            currentYear = now.getFullYear();
+            currentMonth = now.getMonth();
+            renderCalendar();
+            renderPlan();
+            renderSubjectsPage();
+            renderStats();
+            updateSidebarProgress();
+            updateCountdown();
+        }
+
+        function save() {
+            localStorage.setItem('unam_planner_v3', JSON.stringify(state));
+            updateSidebarProgress();
+        }
+
+        // ──────────────── NAV ────────────────
+        function showPage(name, btn) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if(document.getElementById('page-' + name)) {
+                document.getElementById('page-' + name).classList.add('active');
+            }
+            if (btn) btn.classList.add('active');
+            if (name === 'subjects') renderSubjectsPage();
+            if (name === 'stats') { renderStats(); renderFcStats(); }
+            if (name === 'plan') renderPlan();
+        }
+
+        // ──────────────── COUNTDOWN ────────────────
+        function updateCountdown() {
+            const examDate = new Date('2026-05-18');
+            const now = new Date();
+            const diff = Math.ceil((examDate - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('countdown').textContent = diff > 0 ? diff + ' días' : '¡Hoy!';
+        }
+
+        // ──────────────── CALENDAR ────────────────
+        function changeMonth(dir) {
+            currentMonth += dir;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            document.getElementById('monthTitle').textContent = MONTHS_ES[currentMonth] + ' ' + currentYear;
+            document.getElementById('calHeaders').innerHTML = DAYS_ES.map(d => `<div class="cal-day-header">${d}</div>`).join('');
+            const grid = document.getElementById('calGrid');
+            grid.innerHTML = '';
+            const first = new Date(currentYear, currentMonth, 1).getDay();
+            const total = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const today = new Date();
+            for (let i = 0; i < first; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
+            for (let d = 1; d <= total; d++) {
+                const key = dateKey(currentYear, currentMonth + 1, d);
+                const sids = state.calendar[key] || [];
+                const isToday = today.getDate() === d && today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+                let totalT = 0, doneT = 0;
+                sids.forEach(sid => {
+                    const s = TEMARIO.find(x => x.id === sid);
+                    if (s) s.temas.forEach(t => t.subtemas.forEach(st => { totalT++; if (state.topicDone[st.id]) doneT++; }));
+                });
+                let statusClass = '';
+                if (sids.length > 0) { if (totalT > 0 && doneT === totalT) statusClass = 'all-done'; else if (doneT > 0) statusClass = 'partial'; }
+                const tags = sids.slice(0, 4).map(sid => {
+                    const s = TEMARIO.find(x => x.id === sid);
+                    return s ? `<span class="mini-tag" style="background:${s.color}22;color:${s.color}">${s.name.slice(0, 6)}</span>` : '';
+                }).join('');
+                grid.innerHTML += `
+      <div class="cal-day ${isToday ? 'today' : ''} ${sids.length ? 'has-content' : ''} ${statusClass}" onclick="openDay('${key}')">
+        <div class="done-ring"></div>
+        <div class="num">${d}</div>
+        ${sids.length ? `<div class="mini-subjects">${tags}</div>` : '<div class="dot"></div>'}
+      </div>`;
+            }
+        }
+
+        function dateKey(y, m, d) { return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`; }
+
+        // ──────────────── DAY MODAL ────────────────
+        function openDay(key) {
+            currentDayKey = key;
+            const [y, m, d] = key.split('-');
+            document.getElementById('dayModalTitle').textContent = `📅 ${parseInt(d)} de ${MONTHS_ES[parseInt(m) - 1]} ${y}`;
+            renderDaySubjects(key);
+            populateAddSubjectSelect(key);
+            openModal('dayModal');
+        }
+
+        function renderDaySubjects(key) {
+            const list = document.getElementById('daySubjectList');
+            const sids = state.calendar[key] || [];
+            if (!sids.length) {
+                list.innerHTML = `<div class="empty-state"><div class="es-icon">📭</div><p>Sin materias este día.<br>Agrega una abajo.</p></div>`;
+                return;
+            }
+            list.innerHTML = sids.map(sid => {
+                const s = TEMARIO.find(x => x.id === sid);
+                if (!s) return '';
+                const allSubtemas = s.temas.flatMap(t => t.subtemas);
+                const done = allSubtemas.filter(st => state.topicDone[st.id]).length;
+                const total = allSubtemas.length;
+                const allDone = total > 0 && done === total;
+                const temasHTML = s.temas.map(t => {
+                    const subHTML = t.subtemas.map(st => renderSubtemaRow(st, false)).join('');
+                    return `
+        <div style="margin-bottom:6px">
+          <div style="font-size:0.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;padding:5px 0 3px">${t.name}</div>
+          ${subHTML}
+        </div>`;
+                }).join('');
+                return `
+      <div class="subject-card ${allDone ? 'done' : ''}" id="sc-${sid}">
+        <div class="subject-header" onclick="toggleSubjectCard('${sid}')">
+          <div class="subject-checkbox" onclick="event.stopPropagation();toggleAllSubject('${sid}','${key}')">✓</div>
+          <div class="subject-name" style="color:${s.color}">${s.name}</div>
+          <div class="subject-meta">${done}/${total}</div>
+          <button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:0.72rem;margin:0 4px" onclick="event.stopPropagation();removeSubjectFromDay('${sid}','${key}')">✕</button>
+          <div class="subject-toggle">▾</div>
+        </div>
+        <div class="topic-list" id="tl-${sid}">
+          ${temasHTML}
+          <div class="add-topic-row">
+            <input placeholder="+ Agregar subtema extra..." onkeydown="if(event.key==='Enter')addCustomSubtema('${sid}','${key}',this)" />
+          </div>
+        </div>
+      </div>`;
+            }).join('');
+        }
+
+        function renderSubtemaRow(st, isPage) {
+            const done = !!state.topicDone[st.id];
+            const probClass = 'prob-' + st.prob.toLowerCase().replace(' ', '_').replace(' ', '_');
+            const probLabel = st.prob === 'MUY ALTA' ? '🔴 MUY ALTA' : st.prob === 'ALTA' ? '🟡 ALTA' : st.prob === 'MEDIA' ? '🔵 MEDIA' : '⚪ BAJA';
+            const prefix = isPage ? 'p' : '';
+            const resources = (state.resources[st.id] || []);
+            let resHTML = resources.map((r, ri) => `
+    <div class="resource-item">
+      <span class="resource-tag tag-${r.type}">${r.type}</span>
+      ${r.url ? `<a href="${r.url}" target="_blank">${r.label}</a>` : `<span>${r.label}</span>`}
+      <button class="resource-del" onclick="delResource('${st.id}',${ri},'${isPage}')">✕</button>
+    </div>`).join('');
+
+            // Mostrar el Cuaderno como un tag si tiene contenido guardado
+            const nb = state.notebooks ? state.notebooks[st.id] : null;
+            if (nb && nb.pages['p1'] && nb.pages['p1'].content.trim() !== '') {
+                resHTML += `
+    <div class="resource-item" style="cursor:pointer;" onclick="openNotebook('${st.id}', '${st.name.replace(/'/g, "\\'")}')">
+      <span class="resource-tag" style="background:var(--accent);color:#fff">📓 Apunte</span>
+      <span style="color:var(--text); text-decoration:underline; flex:1;">${nb.pages['p1'].title || 'Ver resumen de la hoja'}</span>
+      <button class="resource-del" onclick="event.stopPropagation(); if(confirm('¿Borrar este apunte para siempre?')) delNotebook('${st.id}', '${isPage}')">✕</button>
+    </div>`;
+            }
+
+            return `
+    <div class="topic-row ${done ? 'done' : ''}" id="${prefix}tr-${st.id}">
+      <div class="topic-cb" onclick="toggleSubtema('${st.id}','${isPage}')">✓</div>
+      <div class="topic-info">
+        <div class="topic-name">${st.name}</div>
+        <div class="topic-prob ${probClass}">${probLabel}</div>
+        <div class="topic-resources">${resHTML}</div>
+        <div class="add-resource-form">
+          <select id="${prefix}rt-${st.id}" onchange="if(this.value==='note'){ document.getElementById('${prefix}tr-${st.id}').classList.remove('adding-resource'); openNotebook('${st.id}', '${st.name.replace(/'/g, "\\'")}'); this.value='link'; }">
+            <option value="link">🔗 Link</option>
+            <option value="note">📝 Apunte / Resumen (Hoja Aparte)</option>
+            <option value="file">📎 Archivo</option>
+          </select>
+          <input id="${prefix}rl-${st.id}" placeholder="Título o descripción" />
+          <input id="${prefix}ru-${st.id}" placeholder="URL (opcional)" />
+          <button class="btn-xs primary" onclick="saveResource('${st.id}','${isPage}')">Guardar</button>
+          <button class="btn-xs ghost" onclick="document.getElementById('${prefix}tr-${st.id}').classList.remove('adding-resource')">✕</button>
+        </div>
+        <div class="topic-actions">
+          <button class="btn-xs ghost" onclick="document.getElementById('${prefix}tr-${st.id}').classList.toggle('adding-resource')">+ Recurso</button>
+        </div>
+      </div>
+    </div>`;
+        }
+
+        function toggleSubjectCard(sid) { document.getElementById('sc-' + sid)?.classList.toggle('open'); }
+
+        function toggleAllSubject(sid, key) {
+            const s = TEMARIO.find(x => x.id === sid);
+            if (!s) return;
+            const all = s.temas.flatMap(t => t.subtemas);
+            const allDone = all.every(st => state.topicDone[st.id]);
+            all.forEach(st => { state.topicDone[st.id] = !allDone; });
+            save(); renderDaySubjects(key); renderCalendar();
+        }
+
+        function toggleSubtema(stId, isPage) {
+            state.topicDone[stId] = !state.topicDone[stId];
+            save();
+            const prefix = isPage === 'true' ? 'p' : '';
+            const row = document.getElementById(prefix + 'tr-' + stId);
+            if (row) row.classList.toggle('done', !!state.topicDone[stId]);
+            if (!isPage || isPage === 'false') renderCalendar();
+        }
+
+        function addCustomSubtema(sid, key, input) {
+            const name = input.value.trim(); if (!name) return;
+            // add to state as custom topic
+            const customId = 'c' + Date.now();
+            state.topicDone; // noop - custom topics tracked separately
+            // We'll track custom subtemas in state.custom
+            if (!state.custom) state.custom = {};
+            if (!state.custom[sid]) state.custom[sid] = [];
+            state.custom[sid].push({ id: customId, name, prob: 'MEDIA' });
+            save(); renderDaySubjects(key);
+            setTimeout(() => document.getElementById('sc-' + sid)?.classList.add('open'), 10);
+        }
+
+        function removeSubjectFromDay(sid, key) {
+            if (state.calendar[key]) state.calendar[key] = state.calendar[key].filter(s => s !== sid);
+            save(); renderDaySubjects(key); renderCalendar(); populateAddSubjectSelect(key);
+        }
+
+        function saveResource(stId, isPage) {
+            const prefix = isPage === 'true' ? 'p' : '';
+            const type = document.getElementById(`${prefix}rt-${stId}`)?.value;
+            const label = document.getElementById(`${prefix}rl-${stId}`)?.value.trim();
+            const url = document.getElementById(`${prefix}ru-${stId}`)?.value.trim();
+            if (!label) return;
+            if (!state.resources[stId]) state.resources[stId] = [];
+            state.resources[stId].push({ type, label, url });
+            save();
+            if (isPage === 'true') renderSubjectsPage(); else renderDaySubjects(currentDayKey);
+            setTimeout(() => {
+                if (isPage !== 'true') document.getElementById('sc-' + stId.split('_')[0])?.classList.add('open');
+            }, 10);
+        }
+
+        function delResource(stId, ri, isPage) {
+            if (state.resources[stId]) state.resources[stId].splice(ri, 1);
+            save();
+            if (isPage === 'true') renderSubjectsPage(); else renderDaySubjects(currentDayKey);
+        }
+
+        function delNotebook(stId, isPage) {
+            if (state.notebooks && state.notebooks[stId]) {
+                delete state.notebooks[stId];
+                save();
+                if (isPage === 'true') renderSubjectsPage(); else renderDaySubjects(currentDayKey);
+            }
+        }
+
+        function populateAddSubjectSelect(key) {
+            const sel = document.getElementById('addSubjectSelect');
+            const existing = state.calendar[key] || [];
+            const available = TEMARIO.filter(s => !existing.includes(s.id));
+            sel.innerHTML = available.length
+                ? available.map(s => `<option value="${s.id}">${s.name}</option>`).join('')
+                : `<option value="">— Todas las materias ya están —</option>`;
+        }
+
+        function addSubjectToDay() {
+            const sid = document.getElementById('addSubjectSelect').value;
+            if (!sid) return;
+            if (!state.calendar[currentDayKey]) state.calendar[currentDayKey] = [];
+            if (!state.calendar[currentDayKey].includes(sid)) {
+                state.calendar[currentDayKey].push(sid);
+                save(); renderDaySubjects(currentDayKey); renderCalendar(); populateAddSubjectSelect(currentDayKey);
+            }
+        }
+
+        // ──────────────── PLAN ────────────────
+        function renderPlan() {
+            const cont = document.getElementById('planContent');
+            cont.innerHTML = PLAN_WEEKS.map(w => {
+                const rows = w.days.filter(d => d.subjects.length > 0).map(d => {
+                    const [, m, day] = d.date.split('-');
+                    const tags = d.subjects.map(sid => {
+                        const s = TEMARIO.find(x => x.id === sid);
+                        return s ? `<span class="plan-subject-tag" style="background:${s.color}20;color:${s.color}">${s.name}</span>` : '';
+                    }).join('');
+                    return `
+        <div class="plan-row" onclick="openDay('${d.date}')" style="cursor:pointer">
+          <div class="plan-day-label">${parseInt(day)}/${parseInt(m)}</div>
+          <div style="flex:1">
+            <div class="plan-subjects">${tags}</div>
+            <div class="plan-note">${d.note}</div>
+          </div>
+        </div>`;
+                }).join('');
+                return `
+      <div class="plan-week">
+        <div class="plan-week-header">${w.label} <span style="font-weight:400;color:var(--text3);font-size:0.82rem">· ${w.note}</span></div>
+        <div class="plan-grid">${rows}</div>
+      </div>`;
+            }).join('');
+        }
+
+        // ──────────────── SUBJECTS PAGE ────────────────
+        function renderSubjectsPage() {
+            const cont = document.getElementById('subjectsList');
+            // update badge
+            const totalT = TEMARIO.reduce((a, s) => a + s.temas.reduce((b, t) => b + t.subtemas.length, 0), 0);
+            const doneT = Object.values(state.topicDone).filter(Boolean).length;
+            document.getElementById('navBadge').textContent = doneT + '/' + totalT;
+
+            cont.innerHTML = TEMARIO.map(s => {
+                const allSubs = s.temas.flatMap(t => t.subtemas);
+                const done = allSubs.filter(st => state.topicDone[st.id]).length;
+                const total = allSubs.length;
+                const pct = total ? Math.round(done / total * 100) : 0;
+                const temasHTML = s.temas.map(t => {
+                    const tDone = t.subtemas.filter(st => state.topicDone[st.id]).length;
+                    const subHTML = t.subtemas.map(st => renderSubtemaRow(st, true)).join('');
+                    return `
+        <div style="margin-bottom:8px">
+          <div style="font-size:0.7rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;padding:4px 0 3px;border-bottom:1px solid var(--border);margin-bottom:4px">
+            ${t.name} <span style="font-weight:400;color:var(--text3)">${tDone}/${t.subtemas.length}</span>
+          </div>
+          ${subHTML}
+        </div>`;
+                }).join('');
+                return `
+      <div class="subject-full-card" id="sfc-${s.id}">
+        <div class="sfc-header" onclick="document.getElementById('sfc-${s.id}').classList.toggle('open')">
+          <div class="sfc-color" style="background:${s.color}"></div>
+          <div class="sfc-name">${s.name}</div>
+          <span class="sfc-badge" style="background:${s.color}20;color:${s.color}">${s.reactivos} rct · ${s.pct}</span>
+          <div class="sfc-progress">${done}/${total} · ${pct}%</div>
+          <div class="subject-toggle" style="margin-left:8px">▾</div>
+        </div>
+        <div class="sfc-body" id="sfcb-${s.id}">
+          ${temasHTML}
+        </div>
+      </div>`;
+            }).join('');
+        }
+
+        // ──────────────── STATS ────────────────
+        function renderStats() {
+            const totalT = TEMARIO.reduce((a, s) => a + s.temas.reduce((b, t) => b + t.subtemas.length, 0), 0);
+            const doneT = Object.values(state.topicDone).filter(Boolean).length;
+            const daysStudied = Object.keys(state.calendar).filter(k => state.calendar[k].length > 0).length;
+            const totalRes = Object.values(state.resources).reduce((a, r) => a + r.length, 0);
+            const globalPct = totalT ? Math.round(doneT / totalT * 100) : 0;
+
+            document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-val" style="color:var(--green)">${doneT}</div><div class="stat-label">Subtemas dominados</div></div>
+    <div class="stat-card"><div class="stat-val">${totalT}</div><div class="stat-label">Total subtemas</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--accent)">${globalPct}%</div><div class="stat-label">Progreso global</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--amber)">${daysStudied}</div><div class="stat-label">Días con estudio</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--accent2)">${totalRes}</div><div class="stat-label">Recursos agregados</div></div>`;
+
+            document.getElementById('subjectBars').innerHTML = TEMARIO.map(s => {
+                const all = s.temas.flatMap(t => t.subtemas);
+                const done = all.filter(st => state.topicDone[st.id]).length;
+                const pct = all.length ? Math.round(done / all.length * 100) : 0;
+                return `
+      <div class="sbar-item">
+        <div class="sbar-label">
+          <span>${s.name} <span style="font-size:0.7rem;color:var(--text3)">(${s.reactivos} rct.)</span></span>
+          <span class="sbar-pct">${done}/${all.length}</span>
+        </div>
+        <div class="sbar-track"><div class="sbar-fill" style="width:${pct}%;background:${s.color}"></div></div>
+      </div>`;
+            }).join('');
+        }
+
+        function updateSidebarProgress() {
+            const total = TEMARIO.reduce((a, s) => a + s.temas.reduce((b, t) => b + t.subtemas.length, 0), 0);
+            const done = Object.values(state.topicDone).filter(Boolean).length;
+            const pct = total ? Math.round(done / total * 100) : 0;
+            document.getElementById('sidebarProgress').style.width = pct + '%';
+            document.getElementById('sidebarPct').textContent = done + ' / ' + total + ' temas';
+        }
+
+        // ──────────────── MODALS ────────────────
+        function openModal(id) { document.getElementById(id).classList.add('open'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+        document.querySelectorAll('.modal-overlay').forEach(el => {
+            el.addEventListener('click', function (e) { if (e.target === this) closeModal(this.id); });
+        });
+
+        // ──────────────── EXPORT / IMPORT ────────────────
+        function exportData() {
+            const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+            a.download = 'unam_planner_backup.json'; a.click();
+        }
+        function importData() { document.getElementById('importInput').click(); }
+        function handleImport(e) {
+            const file = e.target.files[0]; if (!file) return;
+            const r = new FileReader();
+            r.onload = ev => { try { state = JSON.parse(ev.target.result); save(); init(); alert('✅ Importado correctamente'); } catch { alert('❌ Archivo inválido'); } };
+            r.readAsText(file); e.target.value = '';
+        }
+
+        // ──────────────── NOTEBOOK & APUNTES ────────────────
+        let currentNbStId = null;
+
+        function openNotebook(stId, title) {
+            currentNbStId = stId;
+            document.getElementById('nbTitle').innerHTML = `📓 Cuaderno <span style="opacity:0.6; font-size:0.8em; margin-left:8px;">❯ ${title}</span>`;
+            
+            // Inicializar notebook
+            if (!state.notebooks) state.notebooks = {};
+            if (!state.notebooks[stId]) {
+                state.notebooks[stId] = { pages: { 'p1': { title: 'Nota Principal', content: '' } } };
+            }
+
+            const page = state.notebooks[stId].pages['p1'];
+            document.getElementById('nbPageTitle').value = page.title || '';
+            document.getElementById('nbPageContent').value = page.content || '';
+            
+            openModal('nbModal');
+        }
+
+        function saveNotebookPage() {
+            if (!currentNbStId || !state.notebooks[currentNbStId]) return;
+            const title = document.getElementById('nbPageTitle').value.trim();
+            const content = document.getElementById('nbPageContent').value.trim();
+            
+            state.notebooks[currentNbStId].pages['p1'] = { title, content };
+            save();
+            
+            const st = document.getElementById('nbSaveStatus');
+            st.style.opacity = '1';
+            setTimeout(() => { st.style.opacity = '0'; }, 2000);
+        }
+
+        // \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 FLASHCARDS IA \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+        let currentFlashcards = [];
+        let fcIndex = 0;
+
+        function exportForAI() {
+            // Recolecta solo temas con notas
+            let extract = [];
+            TEMARIO.forEach(s => {
+                s.temas.forEach(t => t.subtemas.forEach(st => {
+                    const nb = state.notebooks[st.id];
+                    if (nb) {
+                        let text = '';
+                        Object.values(nb.pages).forEach(p => { if (p.content) text += p.content + "\\n"; });
+                        if (text.trim()) extract.push({ materia: s.name, tema: st.name, notas: text.trim() });
+                    }
+                }));
+            });
+            if (!extract.length) { alert("Aún no tienes notas escritas en tus libretas."); return; }
+            navigator.clipboard.writeText(JSON.stringify(extract, null, 2))
+                .then(() => alert("✅ ¡Tus notas se copiaron al portapapeles!\n\nVe a ChatGPT o Claude, pega este JSON y pídele que te genere un simulador o flashcards con el formato esperado."))
+                .catch(() => alert("❌ Hubo un error al copiar"));
+        }
+
+        function openFlashcards() {
+            document.getElementById('geminiApiKey').value = localStorage.getItem('gemini_api_key') || '';
+            document.getElementById('fcDataInput').value = localStorage.getItem('last_flashcards') || '';
+            document.getElementById('fcArea').style.display = 'none';
+            document.getElementById('manualJsonArea').style.display = 'none';
+            openModal('flashcardsModal');
+        }
+
+        function saveApiKey() {
+            const key = document.getElementById('geminiApiKey').value.trim();
+            if(key) {
+                localStorage.setItem('gemini_api_key', key);
+                alert("Llave guardada en tu navegador ✅");
+            }
+        }
+
+        async function generateWithGemini() {
+            const apiKey = localStorage.getItem('gemini_api_key');
+            if (!apiKey) {
+                alert("Por favor, guarda primero tu API Key de Gemini arriba.");
+                return;
+            }
+
+            // Recolectar notas
+            let extract = [];
+            const safeNotebooks = state.notebooks || {};
+            TEMARIO.forEach(s => {
+                s.temas.forEach(t => {
+                    t.subtemas.forEach(st => {
+                        const nb = safeNotebooks[st.id];
+                        if (nb) {
+                            let text = '';
+                            Object.values(nb.pages).forEach(p => { if (p.content) text += p.content + "\\n"; });
+                            if (text.trim()) extract.push({ materia: s.name, tema: st.name, notas: text.trim() });
+                        }
+                    });
+                });
+            });
+
+            let promptSystem = `
+Eres un profesor particular experto en el temario de la UNAM. Te daré mis apuntes en formato JSON. 
+Quiero que analices el texto y generes Flashcards de opción múltiple (A, B, C, D) para razonar.
+RESPONDE ÚNICA Y EXCLUSIVAMENTE CON UN ARREGLO JSON VÁLIDO. SIN TEXTO ANTES NI DESPUÉS. NADA DE MARKDOWN.
+Ejemplo de formato:
+[
+  { 
+    "materia": "...", 
+    "tema": "...", 
+    "pregunta": "¿...?", 
+    "opciones": ["A) ...", "B) ...", "C) ...", "D) ..."], 
+    "respuesta": "Letra y opción correcta exacta" 
+  }
+]
+Genera unas 3-5 tarjetas por tema según mis notas.`;
+
+            let finalContent = JSON.stringify(extract);
+
+            // Si no hay notas, crear prueba
+            if (!extract.length) {
+                if (confirm("No has escrito notas. ¿Quieres generar la tarjeta de PRUEBA de '2+2' con opciones para verificar el sistema?")) {
+                    promptSystem = `Genera EXACTAMENTE 1 tarjeta de prueba. Pregunta: "¿Cuánto es 2+2?". Debes incluir 4 opciones (A, B, C, D) y la respuesta correcta.
+RESPONDE ÚNICA Y EXCLUSIVAMENTE CON UN ARREGLO JSON VÁLIDO. 
+EJEMPLO EXACTO:
+[
+  {
+    "materia": "Matemáticas",
+    "tema": "Prueba del Sistema",
+    "pregunta": "¿Cuánto es 2 + 2?",
+    "opciones": ["A) 3", "B) 4", "C) 5", "D) 22"],
+    "respuesta": "B) 4"
+  }
+]`;
+                    finalContent = "Modo Prueba 2+2";
+                } else {
+                    return;
+                }
+            }
+
+            const btn = document.getElementById('btnGenerateAI');
+            const status = document.getElementById('aiLoadingStatus');
+            btn.disabled = true;
+            status.style.display = 'inline-block';
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        system_instruction: { parts: [{ text: promptSystem }] },
+                        contents: [{ parts: [{ text: finalContent }] }],
+                        generationConfig: { temperature: 0.7, response_mime_type: "application/json" }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errTxt = await response.text();
+                    throw new Error("HTTP " + response.status + ": " + errTxt);
+                }
+
+                const data = await response.json();
+                if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+                    throw new Error("Respuesta inválida de Gemini: " + JSON.stringify(data));
+                }
+                
+                let jsonStr = data.candidates[0].content.parts[0].text;
+                // Remover formato markdown si Gemini lo incluyó por error
+                jsonStr = jsonStr.replace(/```json/gi, '').replace(/```/g, '').trim();
+                
+                // Parsear y cargar
+                let parsed = JSON.parse(jsonStr);
+                if (!Array.isArray(parsed)) throw new Error("El modelo no devolvió un arreglo");
+
+                currentFlashcards = parsed;
+                localStorage.setItem('last_flashcards', JSON.stringify(parsed));
+                fcIndex = 0;
+                
+                // Mostrar y ocultar cosas
+                document.getElementById('fcDataInput').value = JSON.stringify(parsed, null, 2);
+                document.getElementById('fcSetupArea').style.display = 'none';
+                document.getElementById('fcArea').style.display = 'block';
+                showFc(fcIndex);
+
+            } catch (error) {
+                console.error("Error Gemini:", error);
+                alert("Hubo un error al generar las tarjetas:\n" + error.message);
+            } finally {
+                btn.disabled = false;
+                status.style.display = 'none';
+            }
+        }
+
+        function loadFlashcards() {
+            const raw = document.getElementById('fcDataInput').value.trim();
+            if (!raw) return;
+            try {
+                let parsed = JSON.parse(raw);
+                if (!Array.isArray(parsed)) throw new Error();
+                currentFlashcards = parsed;
+                localStorage.setItem('last_flashcards', raw);
+                fcIndex = 0;
+                document.getElementById('fcArea').style.display = 'block';
+                showFc(fcIndex);
+            } catch (e) {
+                alert('❌ El texto pegado no es un JSON válido. Revisa que sea el arreglo correcto.');
+            }
+        }
+
+        function showFc(idx) {
+            if (!currentFlashcards.length) return;
+            const card = document.getElementById('fcCard');
+            card.classList.remove('flipped'); // Reset flip state
+            setTimeout(() => {
+                const c = currentFlashcards[idx];
+                const meta = `${c.materia || 'General'} · ${c.tema || 'Tema'}`;
+                document.getElementById('fcSubject').textContent = meta;
+                document.getElementById('fcSubjectBack').textContent = meta;
+                document.getElementById('fcQuestion').textContent = c.pregunta || c.q || 'Pregunta...';
+                document.getElementById('fcAnswer').textContent = c.respuesta || c.a || 'Respuesta...';
+                
+                const optsContainer = document.getElementById('fcOptions');
+                optsContainer.innerHTML = '';
+                if (c.opciones && Array.isArray(c.opciones)) {
+                    c.opciones.forEach(opt => {
+                        const btn = document.createElement('button');
+                        btn.className = 'fc-opt-btn';
+                        btn.textContent = opt;
+                        btn.onclick = (e) => {
+                            e.stopPropagation();
+                            verifyAnswer(btn, opt, c.respuesta);
+                        };
+                        optsContainer.appendChild(btn);
+                    });
+                } else {
+                    optsContainer.innerHTML = '<div style="font-size:0.75rem;color:var(--text3);margin-top:20px;">Sin opciones guardadas. Usa el botón inferior para girar.</div>';
+                }
+
+                document.getElementById('fcCurr').textContent = idx + 1;
+                document.getElementById('fcTotal').textContent = currentFlashcards.length;
+                document.getElementById('fcPrev').disabled = idx === 0;
+                document.getElementById('fcNext').disabled = idx === currentFlashcards.length - 1;
+            }, 100); 
+        }
+
+        function verifyAnswer(btn, selected, correct) {
+            // Check if already answered
+            if (btn.parentElement.querySelector('.correct') || btn.parentElement.querySelector('.wrong')) return;
+            
+            const isCorrect = selected.trim().toLowerCase() === String(correct).trim().toLowerCase();
+            
+            // --- GRABAR ESTADISTICAS Y DISPLAY TAB ---
+            const c = currentFlashcards[fcIndex];
+            const mat = c.materia || 'General';
+            
+            if (c.tema !== "Prueba del Sistema") {
+                if(!state.fcStats) state.fcStats = {};
+                if(!state.fcHistory) state.fcHistory = [];
+                
+                if(!state.fcStats[mat]) state.fcStats[mat] = { correct:0, total:0 };
+                state.fcStats[mat].total++;
+                if(isCorrect) state.fcStats[mat].correct++;
+                
+                state.fcHistory.unshift({
+                    q: c.pregunta || c.q,
+                    a: c.respuesta || c.a,
+                    selected: selected,
+                    isCorrect: isCorrect,
+                    mat: mat
+                });
+                // Mantener solo las ultimas 50 tarjetas
+                if(state.fcHistory.length > 50) state.fcHistory.pop();
+                save(); // localStorage
+            }
+            // ---------------------------
+            
+            if (isCorrect) {
+                btn.classList.add('correct');
+                // Girar tarjeta despues de un ratito para ver validación posterior
+                setTimeout(() => document.getElementById('fcCard').classList.add('flipped'), 800);
+
+                // --- AUTO-NEXT 10s CON FADE OUT ---
+                const savedIdx = fcIndex;
+                setTimeout(() => {
+                    // Si el usuario no ha cambiado de tarjeta manualmente
+                    if (fcIndex === savedIdx && document.getElementById('fcCard').classList.contains('flipped')) {
+                        const card = document.getElementById('fcCard');
+                        card.classList.add('fade-out');
+                        setTimeout(() => {
+                            if (fcIndex === savedIdx) {
+                                navFc(1);
+                                card.classList.remove('fade-out');
+                            }
+                        }, 1200);
+                    }
+                }, 10000);
+            } else {
+                btn.classList.add('wrong');
+                // Encontrar la correcta y marcarla
+                Array.from(btn.parentElement.children).forEach(b => {
+                    if (b.textContent.trim().toLowerCase() === String(correct).trim().toLowerCase()) {
+                        b.classList.add('correct');
+                    }
+                });
+            }
+        }
+
+        // --- FUNCIONES DE ESTADISTICAS ---
+        function showFcTab(tab) {
+            document.getElementById('fcTabViewRepaso').style.display = tab === 'repaso' ? 'block' : 'none';
+            document.getElementById('fcTabViewStats').style.display = tab === 'stats' ? 'block' : 'none';
+            document.getElementById('fcBtnRepaso').style.borderBottomColor = tab === 'repaso' ? 'var(--accent)' : 'transparent';
+            document.getElementById('fcBtnRepaso').style.color = tab === 'repaso' ? 'var(--text)' : 'var(--text2)';
+            document.getElementById('fcBtnStats').style.borderBottomColor = tab === 'stats' ? 'var(--accent)' : 'transparent';
+            document.getElementById('fcBtnStats').style.color = tab === 'stats' ? 'var(--text)' : 'var(--text2)';
+            if(tab === 'stats') renderFcStats();
+        }
+
+        function renderFcStats() {
+            if(!state.fcStats) state.fcStats = {};
+            if(!state.fcHistory) state.fcHistory = [];
+            
+            const list = document.getElementById('fcStatsList');
+            const globalList = document.getElementById('fcGlobalStatsList');
+            let statsHTML = '';
+            
+            if(Object.keys(state.fcStats).length === 0) {
+                statsHTML = '<div style="color:var(--text3); font-size:0.9rem; grid-column:1/-1;">Aún no hay resultados. ¡Practica en el Simulador!</div>';
+            } else {
+                statsHTML = Object.keys(state.fcStats).map(mat => {
+                    const st = state.fcStats[mat];
+                    const pct = Math.round((st.correct / st.total) * 100);
+                    const color = pct >= 80 ? 'var(--green)' : pct >= 60 ? 'var(--yellow)' : 'var(--red)';
+                    const msg = pct < 70 ? '<div style="font-size:0.75rem; color:var(--red); margin-top:4px;">⚠️ Sugerencia: Repasar más apuntes de este tema en el Cuaderno.</div>' : '<div style="font-size:0.75rem; color:var(--green); margin-top:4px;">✨ Dominado. ¡Excelente!</div>';
+                    return `
+                    <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:10px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                            <strong>${mat}</strong>
+                            <span style="color:${color}; font-weight:bold;">${pct}%</span>
+                        </div>
+                        <div style="height:6px; background:var(--surface); border-radius:3px; overflow:hidden;">
+                            <div style="height:100%; width:${pct}%; background:${color};"></div>
+                        </div>
+                        <div style="font-size:0.8rem; color:var(--text2); margin-top:6px;">${st.correct} de ${st.total} correctas</div>
+                        ${msg}
+                    </div>`;
+                }).join('');
+            }
+            if(list) list.innerHTML = statsHTML;
+            if(globalList) globalList.innerHTML = statsHTML;
+            
+            const hist = document.getElementById('fcHistoryList');
+            const globalHist = document.getElementById('fcGlobalHistoryList');
+            let histHTML = '';
+            
+            if(state.fcHistory.length === 0) {
+                histHTML = '<div style="color:var(--text3); font-size:0.8rem;">Historial vacío.</div>';
+            } else {
+                histHTML = state.fcHistory.map(h => {
+                    const bg = h.isCorrect ? 'rgba(74, 222, 128, 0.1)' : 'rgba(248, 113, 113, 0.1)';
+                    const border = h.isCorrect ? 'var(--green)' : 'var(--red)';
+                    const icon = h.isCorrect ? '✅' : '❌';
+                    return `
+                    <div style="background:${bg}; border-left:4px solid ${border}; padding:10px 14px; border-radius:4px;">
+                        <div style="font-size:0.75rem; color:var(--text3); margin-bottom:4px;">${h.mat}</div>
+                        <div style="font-size:0.85rem; font-weight:600; margin-bottom:6px; color:var(--text);">${h.q}</div>
+                        <div style="font-size:0.8rem; display:flex; gap:8px;">
+                            <span>${icon} Tu respuesta: <span style="color:var(--text);">${h.selected}</span></span>
+                        </div>
+                        ${!h.isCorrect ? `<div style="font-size:0.8rem; margin-top:4px; color:var(--green);">✓ Correcta: ${h.a}</div>` : ''}
+                    </div>`;
+                }).join('');
+            }
+            if(hist) hist.innerHTML = histHTML;
+            if(globalHist) globalHist.innerHTML = histHTML;
+        }
+
+        function resetFcStats() {
+            state.fcStats = {};
+            state.fcHistory = [];
+            save();
+            renderFcStats();
+            if(document.getElementById('page-stats').classList.contains('active')) renderStats();
+        }
+
+        function navFc(dir) {
+            let newIdx = fcIndex + dir;
+            if (newIdx >= 0 && newIdx < currentFlashcards.length) {
+                fcIndex = newIdx;
+                showFc(fcIndex);
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
